@@ -5,7 +5,6 @@ class ApplicationController < ActionController::Base
 
   helper_method :current_user # esto lo pones para que el metodo este disponible
                               # en todas las vistas
-
   def current_user
   	if @current_user.nil?
   		@current_user = User.find_by_id(session[:user_id])
@@ -18,5 +17,9 @@ class ApplicationController < ActionController::Base
   		redirect_to login_path
   	end
   end
+
+  def dropbox_client
+    @dropboxclient ||= Dropbox::API::Client.new(:token => session[:access_token], :secret => session[:access_secret_token])
+  end 
 
 end
