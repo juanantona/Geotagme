@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Mock3</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+
+  <!--#################################################################-->
+  <script src="http://cdn.leafletjs.com/leaflet-0.5/leaflet.js"></script>
+  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.css" />
+
+  <style>
+    #map { 
+    widh: 50px;
+    height: 600px; }
+  </style>
+
+  <!--#################################################################-->
+
+</head>
+<body>
+
+<%= yield %>
+
+</body>
+</html>
