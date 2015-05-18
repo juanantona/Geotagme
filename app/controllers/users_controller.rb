@@ -19,21 +19,21 @@ class UsersController < ApplicationController
 
 	    @client = Dropbox::API::Client.new(:token => session[:access_token], :secret => session[:access_secret_token])
         
-        new_user(@client)
+        @user = User.new
+	    @user.name = @client.account.display_name
+	    @user.email = @client.account.email
+        
+        render 'new'
     
     end
 
-    # rendsers the signup form
-	def new_user(client)
+    def new
 	   @user = User.new
-	   @user.name = client.account.display_name
-	   @user.email = client.account.email
-
 	end
 
-    # receives form and crates
-    # an user from that data 
-	def create
+    def create
+
+
 		
 		@user = User.new(users_params)
 		if @user.save
