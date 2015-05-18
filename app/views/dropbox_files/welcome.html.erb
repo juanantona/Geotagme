@@ -1,0 +1,18 @@
+<h1>WELCOME TO GEOTAGME</h1>
+
+<ul>
+<% @photos.each do |file| %>
+   <% if file.class == Array %>
+	   <% file.each do |photo| %>
+	     <li><%= photo[:path]  %></li>
+	   <% end %> 
+   <% else %>
+  
+
+       <li><%= file[:path]  %></li>
+   <% end %>
+<% end %>       
+
+</ul>
+
+<%= link_to "ViewMap", viewmap_path %><br>

@@ -7,11 +7,15 @@ Rails.application.routes.draw do
   get '/dropbox/callback' => 'users#callback', :as =>  :dropbox_callback
 
   post '/signup' => 'users#create'
-  get '/welcome' => 'users#welcome', as: :welcome
-
+  
   get '/login' => 'sessions#new'
   post '/login' => 'sessions#create'
   get '/logout' => 'sessions#destroy'
+
+  get '/welcome' => 'dropbox_files#welcome', as: :welcome
+  get '/viewmap' => 'dropbox_files#viewmap', as: :viewmap
+
+
 
   #################################################################################
 
