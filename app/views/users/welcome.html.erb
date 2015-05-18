@@ -1,4 +1,0 @@
-<h1>WELCOME TO GEOTAGME</h1>
-<%= current_user.name %><br>
-<% @client = Dropbox::API::Client.new(:token => session[:access_token], :secret => session[:access_secret_token])%>
-<%= @client.account.email %>
