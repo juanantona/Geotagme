@@ -1,7 +1,18 @@
 Rails.application.routes.draw do
   
-  get '/dropbox/authorize'   => 'dropbox_files#authorize', :as => :dropbox_auth
-  get '/dropbox/callback' => 'dropbox_files#callback', :as =>  :dropbox_callback
+  root to: 'users#new'
+  get '/signup' => 'users#new', as: :users
+
+  get '/dropbox/authorize'   => 'users#authorize', as: :dropbox_auth
+  get '/dropbox/callback' => 'users#callback', :as =>  :dropbox_callback
+
+  post '/users' => 'users#create'
+
+  # get '/login' => 'sessions#new'
+  # post '/login' => 'sessions#create'
+  # get '/logout' => 'sessions#destroy'
+
+  #################################################################################
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

@@ -1,5 +1,6 @@
 class DropboxFilesController < ApplicationController
   
+
  def authorize
     consumer = Dropbox::API::OAuth.consumer(:authorize)
     request_token = consumer.get_request_token
@@ -11,13 +12,14 @@ class DropboxFilesController < ApplicationController
   end
  
   def callback
+    
     consumer = Dropbox::API::OAuth.consumer(:authorize)
     hash = { oauth_token: session[:request_token], oauth_token_secret: session[:request_token_secret]}
     request_token  = OAuth::RequestToken.from_hash(consumer, hash)
     access_token = request_token.get_access_token(:oauth_verifier => params[:oauth_token])
     session[:access_token]  = access_token.token
     session[:access_secret_token] = access_token.secret
-    
+    binding.pry
     # consumer = Dropbox::API::OAuth.consumer(:authorize)
     # request_token = OAuth::RequestToken.new(consumer, session[:request_token], session[:request_token_secret])
     # access_token = request_token.get_access_token(:oauth_verifier => params[:oauth_token])
