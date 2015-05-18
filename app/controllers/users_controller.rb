@@ -1,11 +1,17 @@
 class UsersController < ApplicationController
 
+	def welcome
+		render 'welcome'
+	end
+
 	def authorize
+	   
 	    consumer = Dropbox::API::OAuth.consumer(:authorize)
 	    request_token = consumer.get_request_token
 	    session[:request_token] = request_token.token
 	    session[:request_token_secret] = request_token.secret
 	    redirect_to request_token.authorize_url(:oauth_callback => "http://#{request.host_with_port}/dropbox/callback")
+    
     end
 
     def callback
@@ -32,17 +38,19 @@ class UsersController < ApplicationController
 	end
 
     def create
-
-
 		
 		@user = User.new(users_params)
+		@user.token = session[:access_token]
+		@user.secret = session[:access_secret_token]
+		@user.role = "supplier" if (session[:access_secret_token] != :null)
+
 		if @user.save
 			session[:user_id] = @user.id
 			# session[] es un objeto donde tu almacenas las variables de sesion
 			# la key :user_id la estoy creando en este mismo momento
 			# cookie[] es otro objeto disponible para almacenar cosas 
 			# session y cookie siempre estan disponibles en todas las requests
-			redirect_to root_path
+			redirect_to welcome_path
 		else
 		    render :new
 		end    	

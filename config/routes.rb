@@ -6,7 +6,8 @@ Rails.application.routes.draw do
   get '/dropbox/authorize'   => 'users#authorize', as: :dropbox_auth
   get '/dropbox/callback' => 'users#callback', :as =>  :dropbox_callback
 
-  post '/users' => 'users#create'
+  post '/signup' => 'users#create'
+  get '/welcome' => 'users#welcome', as: :welcome
 
   # get '/login' => 'sessions#new'
   # post '/login' => 'sessions#create'
