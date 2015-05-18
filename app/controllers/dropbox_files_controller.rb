@@ -38,12 +38,14 @@ class DropboxFilesController < ApplicationController
       end
 
       if dp_file
-        DropboxFile.new(:image => dp_file).save!
+        record = DropboxFile.new(:image => dp_file)
+        record.url = photo.direct_url.url
+        record.save
       end
      
       exif_data = EXIFR::JPEG.new(destination_file_full_path)
 
-      binding.pry
+     # binding.pry
 
       @latitude = exif_data.gps.latitude
       @longitude = exif_data.gps.longitude

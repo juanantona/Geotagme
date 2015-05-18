@@ -4,15 +4,13 @@
 <% @photos.each do |file| %>
    <% if file.class == Array %>
 	   <% file.each do |photo| %>
-	     <li><%= photo[:path]  %></li>
+	     <li><%= link_to "#{photo[:path]}", viewmap_path %></li>
 	   <% end %> 
    <% else %>
-  
 
-       <li><%= file[:path]  %></li>
+       <li><%= link_to "#{file[:path]}", viewmap_path %></li>
    <% end %>
 <% end %>       
 
 </ul>
 
-<%= link_to "ViewMap", viewmap_path %><br>
