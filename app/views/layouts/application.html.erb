@@ -21,6 +21,19 @@
 </head>
 <body>
 
+  <% if current_user.nil? %>
+    <p>No current user</p>
+    <%= link_to 'logout', login_path %>
+    <%= link_to 'signup', signup_path %>
+  <% else %>
+    <p>You are logged in as: <%= current_user.name %></p>
+    <%= link_to 'logout', logout_path %>
+  <% end %>
+
+  <% flash.each do |name, message| %>
+    <p><%= message %></p>
+  <% end %>
+
 <%= yield %>
 
 </body>

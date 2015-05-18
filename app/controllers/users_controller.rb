@@ -42,7 +42,7 @@ class UsersController < ApplicationController
 		@user = User.new(users_params)
 		@user.token = session[:access_token]
 		@user.secret = session[:access_secret_token]
-		@user.role = "supplier" if (session[:access_secret_token] != :null)
+		@user.role = "supplier" if (session[:access_secret_token] != nil)
 
 		if @user.save
 			session[:user_id] = @user.id

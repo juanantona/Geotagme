@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   
-  root to: 'users#new'
+  root to: 'site#home'
   get '/signup' => 'users#new', as: :users
 
   get '/dropbox/authorize'   => 'users#authorize', as: :dropbox_auth
@@ -9,9 +9,9 @@ Rails.application.routes.draw do
   post '/signup' => 'users#create'
   get '/welcome' => 'users#welcome', as: :welcome
 
-  # get '/login' => 'sessions#new'
-  # post '/login' => 'sessions#create'
-  # get '/logout' => 'sessions#destroy'
+  get '/login' => 'sessions#new'
+  post '/login' => 'sessions#create'
+  get '/logout' => 'sessions#destroy'
 
   #################################################################################
 

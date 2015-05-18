@@ -1,0 +1,9 @@
+<h1>GEOTAGME SIGNIN!</h1>
+
+<%= form_tag login_path do %>
+<!-- form_tag es un helper que te crea un formulario genérico -->
+<!-- no utilizamos form_for porque no hemos creado el modelo de session -->
+Email: <%= text_field_tag :email %><br>
+Password: <%= password_field_tag :password %><br>
+<%= submit_tag "Submit" %>
+<% end %>
