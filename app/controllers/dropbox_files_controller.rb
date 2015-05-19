@@ -3,6 +3,8 @@ class DropboxFilesController < ApplicationController
   def welcome
 
       @client = dropbox_client
+
+      binding.pry
   
       @photos=[]  
 
@@ -11,7 +13,40 @@ class DropboxFilesController < ApplicationController
              @photos << directory_hash(f)
           end
       end
+
+
+       if @client.ls.any?
+           @client.ls.each do |f|
+             unless obj.is_dir?
+               
+               destination_file_full_path = Rails.root.to_s + "/" + photo.path.to_s.split("/").last
+               
+               unless File.exists?(destination_file_full_path)
+                 
+                 open(destination_file_full_path, 'wb') do |file|
+                   file << f.download
+                 end
+                 dp_file = File.open(destination_file_full_path)
+                 record = DropboxFile.new(:image => dp_file)
+                 record.url = f.direct_url.url
+                 record.path = f.path
+                 
+                 exif_data = EXIFR::JPEG.new(destination_file_full_path)
+                 record.geolocation = 'POINT(#{exif_data.gps.longitude} #{exif_data.gps.latitude})'
+                 record.timestamps = exif_data.date_time 
+                 record.save
+                 
+               end
+
+
+             end
+
+          end
+      end
       
+
+
+
       render 'welcome'
         
   end
