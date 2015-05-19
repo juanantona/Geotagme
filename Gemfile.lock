@@ -30,6 +30,9 @@ GEM
       activemodel (= 4.2.1)
       activesupport (= 4.2.1)
       arel (~> 6.0)
+    activerecord-postgis-adapter (2.2.0)
+      activerecord (~> 4.0)
+      rgeo-activerecord (~> 1.0)
     activesupport (4.2.1)
       i18n (~> 0.7)
       json (~> 1.7, >= 1.7.7)
@@ -128,6 +131,10 @@ GEM
     rake (10.4.2)
     rdoc (4.2.0)
       json (~> 1.4)
+    rgeo (0.3.20)
+    rgeo-activerecord (1.2.0)
+      activerecord (~> 4.0)
+      rgeo (~> 0.3)
     rspec-core (3.2.3)
       rspec-support (~> 3.2.0)
     rspec-expectations (3.2.1)
@@ -183,6 +190,7 @@ PLATFORMS
   x86-mingw32
 
 DEPENDENCIES
+  activerecord-postgis-adapter
   bcrypt (~> 3.1.7)
   byebug
   dropbox-api
