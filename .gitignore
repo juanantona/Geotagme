@@ -13,3 +13,4 @@
 /tmp
 *.jpg
 *.jpeg
+Gemfile.lock
