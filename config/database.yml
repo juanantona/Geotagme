@@ -24,6 +24,9 @@ default: &default
 
 development:
   <<: *default
+  adapter: postgis
+  host: localhost
+  schema_search_path: public
   database: mock3_development
 
   # The specified database role being used to connect to postgres.
