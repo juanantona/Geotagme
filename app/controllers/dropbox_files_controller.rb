@@ -9,8 +9,18 @@ class DropboxFilesController < ApplicationController
   def view_photos
 
     @photos = DropboxFile.where(supplier_id: current_user.supplier_id)
+      
+  end
+
+  def download_photos
 
     # download_photos_and_save_db_record()
+
+    sleep 3
+
+    @photos = DropboxFile.where(supplier_id: current_user.supplier_id)
+
+    render :json => { moreThings: @photos }
     
   end
 

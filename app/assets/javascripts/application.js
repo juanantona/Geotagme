@@ -13,5 +13,6 @@
 //= require jquery
 //= require jquery_ujs
 //= require bla
+//= require dropbox_files
 // require turbolinks
 //= require_tree .

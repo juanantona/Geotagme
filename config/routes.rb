@@ -16,6 +16,7 @@ Rails.application.routes.draw do
 
   get '/dashboard' => 'dropbox_files#dashboard', as: :dashboard
   get '/view_photos' => 'dropbox_files#view_photos', as: :view_photos
+  get '/download_photos' => 'dropbox_files#download_photos'
 
 
 
