@@ -1,0 +1,19 @@
+<h1>WELCOME TO GEOTAGME</h1>
+
+
+
+<ul>
+
+	<% @photos.each do |photo| %>
+	   <li><%= photo.image_file_name %></li>
+	   <img src=<%= photo.url %> class="thumbnail" />
+	<% end %>       
+
+</ul>
+
+<style>
+    .thumbnail{
+    width: 150px;
+    height: auto; 
+    }
+<style>

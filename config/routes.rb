@@ -14,8 +14,8 @@ Rails.application.routes.draw do
   post '/login' => 'sessions#create'
   get '/logout' => 'sessions#destroy'
 
-  get '/welcome' => 'dropbox_files#welcome', as: :welcome
-  get '/viewmap' => 'dropbox_files#viewmap', as: :viewmap
+  get '/dashboard' => 'dropbox_files#dashboard', as: :dashboard
+  get '/view_photos' => 'dropbox_files#view_photos', as: :view_photos
 
 
 

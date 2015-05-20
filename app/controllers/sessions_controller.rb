@@ -16,7 +16,8 @@ class SessionsController < ApplicationController
 	        session[:access_secret_token]  = @user.secret
 	        session[:supplier_id] = @user.supplier_id
 			
-			redirect_to welcome_path
+			redirect_to dashboard_path
+
 		else 
 		    redirect_to	login_path, notice: "Wrong email or password"
 		end

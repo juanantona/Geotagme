@@ -1,21 +1,19 @@
 class DropboxFilesController < ApplicationController
   
-  def welcome
+  def dashboard
 
       @client = dropbox_client
   
-      download_photos_and_save_db_record()
-
-      @photos = DropboxFile.where(supplier_id: current_user.supplier_id)  
-
-      if @client.ls.any?
-          @client.ls.each do |f|
-              @photos << directory_hash(f)
-           end
-       end
-
-       render 'welcome'
+      #download_photos_and_save_db_record()
+      
+      render 'dashboard'
         
+  end
+
+  def view_photos
+
+    @photos = DropboxFile.where(supplier_id: current_user.supplier_id)
+    
   end
 
   def viewmap

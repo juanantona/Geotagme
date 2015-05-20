@@ -1,9 +1,5 @@
 class UsersController < ApplicationController
 
-	def welcome
-		render 'welcome'
-	end
-
 	def authorize
 	   
 	    consumer = Dropbox::API::OAuth.consumer(:authorize)
