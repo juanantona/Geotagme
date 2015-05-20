@@ -1,19 +1,91 @@
-<h1>WELCOME TO GEOTAGME</h1>
+<div class="container">
+    
+  <header class="header">
+  	<h1>WELCOME TO GEOTAGME</h1>
+  </header>
 
+  <div class="content">
+    <section id="map" class="section map">
+        
+        <script>
+ 
+            var map = L.map('map').setView([30.718, -5.347],14);
+ 
+			L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+			    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
+			    maxZoom: 18
+			}).addTo(map);
 
+            L.control.scale().addTo(map);
+			
+			var popup = L.popup()
+			    .setLatLng([30.718, -5.347])
+			    .setContent("This photo was taken here.")
+			    .openOn(map);
 
-<ul>
+        </script>
+    </section>
+        
+    <aside class="relations">
+        <ul>
 
-	<% @photos.each do |photo| %>
-	   <li><%= photo.image_file_name %></li>
-	   <img src=<%= photo.url %> class="thumbnail" />
-	<% end %>       
+			<% @photos.each do |photo| %>
+			   <li><%= photo.image_file_name %></li>
+			   <img src=<%= photo.url %> class="thumbnail" />
+			<% end %>       
 
-</ul>
+        </ul>
+    </aside>        
+   </div>
+
+   <footer class="footer">
+   </footer>
+</div>
 
 <style>
-    .thumbnail{
-    width: 150px;
-    height: auto; 
-    }
-<style>
+
+      .thumbnail{
+        width: 150px;
+        height: auto; 
+      }
+      .container {
+        width: 940px;
+        margin: 0 auto;
+      }
+      .header {
+        height: 100px;
+        margin-bottom: 40px;
+      }
+      .footer {
+        height: 100px;
+        clear:both;
+      }
+      .content {
+        margin-bottom: 40px;
+        position: relative;
+      }
+      .content:before {
+        content:"";
+        position: absolute;
+        width: 1px;
+        background: black;
+        height: 100%;
+        right: 320px;
+      }
+      .content:after {
+        content: "";
+        display: block;
+        clear: both;
+      }
+      .section {
+        float: left; 
+        width: 600px;
+        height: 500px;
+      }
+      .relations {
+        float: right; 
+        width: 300px;
+        height: 200px;
+      }
+    </style>
+
