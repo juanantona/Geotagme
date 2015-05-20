@@ -42,10 +42,12 @@ class UsersController < ApplicationController
 		@user = User.new(users_params)
 		@user.token = session[:access_token]
 		@user.secret = session[:access_secret_token]
-		@user.role = "supplier" if (session[:access_secret_token] != nil)
+		@user.role = "supplier"
 
 		if @user.save
 			session[:user_id] = @user.id
+			@user.supplier_id = @user.id
+			@user.save
 			# session[] es un objeto donde tu almacenas las variables de sesion
 			# la key :user_id la estoy creando en este mismo momento
 			# cookie[] es otro objeto disponible para almacenar cosas 

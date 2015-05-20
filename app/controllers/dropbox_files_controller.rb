@@ -6,9 +6,7 @@ class DropboxFilesController < ApplicationController
   
       download_photos_and_save_db_record()
 
-      binding.pry
-
-      @photos=[]  
+      @photos = DropboxFile.where(supplier_id: current_user.supplier_id)  
 
       if @client.ls.any?
           @client.ls.each do |f|
@@ -67,45 +65,41 @@ class DropboxFilesController < ApplicationController
     
     if @client.ls(@photo_folder).any?
 
-           @client.ls(@photo_folder).each do |f|
+      @client.ls(@photo_folder).each do |dropbox_element|
+                      
+         unless dropbox_element.is_dir?
+                   
+           destination_file_full_path = Rails.root.to_s + "/" + dropbox_element.path.to_s.split("/").last
+           unless DropboxFile.where(url: dropbox_element.direct_url.url).where(supplier_id: current_user.supplier_id).exists?
              
-             
-             unless f.is_dir?
-              
-
-               
-               
-               destination_file_full_path = Rails.root.to_s + "/" + f.path.to_s.split("/").last
-               
-               unless File.exists?(destination_file_full_path)
-                 
-                 open(destination_file_full_path, 'wb') do |file|
-                   file << f.download
-                 end
-
-                 dp_file = File.open(destination_file_full_path)
-                 record = DropboxFile.new(:image => dp_file)
-                 record.supplier_id = current_user.id if (current_user.role == "supplier")
-                 record.url = f.direct_url.url
-                 record.path = f.path
-                 
-                 exif_data = EXIFR::JPEG.new(destination_file_full_path)
-                 # record.geolocation = 'POINT(#{exif_data.gps.longitude} #{exif_data.gps.latitude})'
-                 record.photo_timestamps = exif_data.date_time
-                 binding.pry 
-                 record.save
-                 
-               end
-
+             open(destination_file_full_path, 'wb') do |file|
+               file << dropbox_element.download
              end
-
-          end
-    
+             
+             save_db_record(dropbox_element, destination_file_full_path)
+                        
+           end
+        end
       end
-
+    end
   end
 
+  def save_db_record(dropbox_element, destination_file_full_path)
 
+     local_file = File.open(destination_file_full_path)
+     
+     record = DropboxFile.new(:image => local_file)
+     record.supplier_id = current_user.supplier_id
+     record.url = dropbox_element.direct_url.url
+     record.path = dropbox_element.path
+     
+     exif_data = EXIFR::JPEG.new(destination_file_full_path)
+     # record.geolocation = 'POINT(#{exif_data.gps.longitude} #{exif_data.gps.latitude})'
+     record.photo_timestamps = exif_data.date_time
+      
+     record.save
+  
+  end
 
 
  
