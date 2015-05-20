@@ -8,8 +8,8 @@
     <section id="map" class="section map">
         
         <script>
- 
-            var map = L.map('map').setView([30.718, -5.347],14);
+
+            var map = L.map('map').setView([<%= @photos[0].geolocation.longitude %>, <%= @photos[0].geolocation.latitude %>],5);
  
 			L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 			    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
@@ -17,20 +17,21 @@
 			}).addTo(map);
 
             L.control.scale().addTo(map);
-			
-			var popup = L.popup()
-			    .setLatLng([30.718, -5.347])
-			    .setContent("This photo was taken here.")
-			    .openOn(map);
 
-        </script>
+            <% @photos.each do |photo| %>
+			   L.marker([<%= photo.geolocation.longitude %>, <%= photo.geolocation.latitude %>], {draggable: false}).addTo(map);
+			<% end %>
+          
+	   </script>
+    
     </section>
+    
         
     <aside class="relations">
         <ul>
 
 			<% @photos.each do |photo| %>
-			   <li><%= photo.image_file_name %></li>
+			   <li><%= photo.photo_timestamps %></li>
 			   <img src=<%= photo.url %> class="thumbnail" />
 			<% end %>       
 
@@ -53,7 +54,7 @@
         margin: 0 auto;
       }
       .header {
-        height: 100px;
+        height: 50px;
         margin-bottom: 40px;
       }
       .footer {

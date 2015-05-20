@@ -10,7 +10,7 @@ class DropboxFilesController < ApplicationController
 
     @photos = DropboxFile.where(supplier_id: current_user.supplier_id)
 
-    download_photos_and_save_db_record()
+    # download_photos_and_save_db_record()
     
   end
 
@@ -59,7 +59,7 @@ class DropboxFilesController < ApplicationController
      record.path = dropbox_element.path
      
      exif_data = EXIFR::JPEG.new(destination_file_full_path)
-     # record.geolocation = 'POINT(#{exif_data.gps.longitude} #{exif_data.gps.latitude})'
+     record.geolocation = "POINT(#{exif_data.gps.latitude} #{exif_data.gps.longitude})"
      record.photo_timestamps = exif_data.exif[:date_time_digitized]
       
      record.save
