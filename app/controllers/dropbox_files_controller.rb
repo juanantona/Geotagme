@@ -14,13 +14,23 @@ class DropboxFilesController < ApplicationController
 
   def download_photos
 
-    # download_photos_and_save_db_record()
+    @photos_downloaded_previous = DropboxFile.where(supplier_id: current_user.supplier_id)
 
-    sleep 3
+    offset = @photos_downloaded_previous.length
 
-    @photos = DropboxFile.where(supplier_id: current_user.supplier_id)
+    download_photos_and_save_db_record()
 
-    render :json => { moreThings: @photos }
+    @photos_downloaded_now = DropboxFile.where(supplier_id: current_user.supplier_id).order(created_at: :asc).offset(offset)
+
+    logger.info "\n **"
+    logger.info "\n **"
+    logger.info "\n **"
+    logger.info @photos_downloaded_now.length
+    logger.info "\n **"
+    logger.info "\n **"
+    logger.info "\n **"
+
+    render :json => { moreThings: @photos_downloaded_now }
     
   end
 
@@ -30,7 +40,7 @@ class DropboxFilesController < ApplicationController
 
     @client = dropbox_client
     @photo_folder = "/photos"
-    
+
     if @client.ls(@photo_folder).any?
 
       @client.ls(@photo_folder).each do |dropbox_element|
@@ -52,7 +62,7 @@ class DropboxFilesController < ApplicationController
              end
 
              save_db_record(dropbox_element, destination_file_full_path)
-                        
+                               
            end
         end
       end

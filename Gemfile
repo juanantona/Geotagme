@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-
+gem 'sprockets', '~>  2.11.0'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.1'
 # Use postgresql as the database for Active Record
@@ -37,6 +37,7 @@ gem 'paperclip'
 gem 'mini_magick'
 gem "exifr"
 gem 'activerecord-postgis-adapter'
+
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

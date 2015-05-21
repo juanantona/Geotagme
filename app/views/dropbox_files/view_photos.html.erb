@@ -11,22 +11,20 @@
 
             var map = L.map('map').setView([<%= @photos[0].geolocation.longitude %>, <%= @photos[0].geolocation.latitude %>],5);
  
-			L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-			    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
-			    maxZoom: 18
-			}).addTo(map);
+			      L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', 
+            {
+			         attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',	    maxZoom: 18
+			      }).addTo(map);
 
             L.control.scale().addTo(map);
 
             <% @photos.each do |photo| %>
-			   L.marker([<%= photo.geolocation.longitude %>, <%= photo.geolocation.latitude %>], {draggable: false}).addTo(map);
-			<% end %>
+			          L.marker([<%= photo.geolocation.longitude %>, <%= photo.geolocation.latitude %>], {draggable: false}).addTo(map);
+			      <% end %>
           
-	   </script>
+	      </script>
 
-   
     </section>
-    
         
     <aside class="relations">
         <ul id="photo_carrusel">

@@ -48,7 +48,7 @@ class UsersController < ApplicationController
 			# la key :user_id la estoy creando en este mismo momento
 			# cookie[] es otro objeto disponible para almacenar cosas 
 			# session y cookie siempre estan disponibles en todas las requests
-			redirect_to welcome_path
+			redirect_to dashboard_path
 		else
 		    render :new
 		end    	

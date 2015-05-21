@@ -7,11 +7,16 @@ $(document).ready(function()
         url: "/download_photos",
         type: "GET",
         success: function(data){
-            data.moreThings.forEach(function(thing){
-                $("#photo_carrusel").append($("<li>").html(thing));
+            data.moreThings.forEach(function(photo)
+            {
+                $("#photo_carrusel").append($("<li>").html(photo.photo_timestamps));
+                var img = '<img src=' + photo.url + ' class="thumbnail">';
+                $("#photo_carrusel").append(img);
             });
         },
-        error: function(){
+        
+        error: function()
+        {
             console.log("nop");
         }
     });
