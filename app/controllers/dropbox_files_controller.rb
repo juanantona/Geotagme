@@ -9,6 +9,15 @@ class DropboxFilesController < ApplicationController
   def view_photos
 
     @photos = DropboxFile.where(supplier_id: current_user.supplier_id)
+    @points=[]
+
+    @photos.each do |photo|
+         @points << [photo.geolocation.lon, photo.geolocation.lat]
+    end 
+
+
+
+    render "view_photos"
       
   end
 
@@ -18,17 +27,9 @@ class DropboxFilesController < ApplicationController
 
     offset = @photos_downloaded_previous.length
 
-    download_photos_and_save_db_record()
+    # download_photos_and_save_db_record()
 
     @photos_downloaded_now = DropboxFile.where(supplier_id: current_user.supplier_id).order(created_at: :asc).offset(offset)
-
-    logger.info "\n **"
-    logger.info "\n **"
-    logger.info "\n **"
-    logger.info @photos_downloaded_now.length
-    logger.info "\n **"
-    logger.info "\n **"
-    logger.info "\n **"
 
     render :json => { moreThings: @photos_downloaded_now }
     
