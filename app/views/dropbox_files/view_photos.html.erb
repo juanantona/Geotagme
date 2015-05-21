@@ -63,6 +63,17 @@
               bounds = new L.LatLngBounds(new L.LatLng(30.55555, -5.55555),
                                            new L.LatLng(31.55555, -6.55555));
 
+              // var latlng=[]; = L.latLng(50.5, 30.5);
+              // <% @points.each do |photo| %>
+              //    L.latLng(50.5, 30.5)
+              //   <% bounds<< photo.geolocation.longitude %>, <%= photo.geolocation.latitude %>
+              //   <% bounds<< photo.geolocation.longitude %>, <%= photo.geolocation.latitude %>], {draggable: false}).addTo(map);
+              //   <% end %>
+
+
+// var bounds = new L.LatLngBounds(arrayOfLatLngs);
+
+
 
           var map = new L.Map('map', 
           {
@@ -70,6 +81,8 @@
             zoom: 5,
             layers: [osm],
             });
+
+          map.fitBounds(bounds);
 
           var popup = L.popup();
 
