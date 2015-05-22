@@ -59,21 +59,15 @@
           
           var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
               osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-              osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib}),
-              bounds = new L.LatLngBounds(new L.LatLng(30.55555, -5.55555),
-                                           new L.LatLng(31.55555, -6.55555));
+              osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib});
 
-              // var latlng=[]; = L.latLng(50.5, 30.5);
-              // <% @points.each do |photo| %>
-              //    L.latLng(50.5, 30.5)
-              //   <% bounds<< photo.geolocation.longitude %>, <%= photo.geolocation.latitude %>
-              //   <% bounds<< photo.geolocation.longitude %>, <%= photo.geolocation.latitude %>], {draggable: false}).addTo(map);
-              //   <% end %>
+          var arrayOfLatLngs = [];
+              arrayOfLatLngs.push(new L.LatLng(30.74656, -5.33936));
+              arrayOfLatLngs.push(new L.LatLng(29.95018, -6.78406));
+              arrayOfLatLngs.push(new L.LatLng(30.47472, -5.42175));
+              arrayOfLatLngs.push(new L.LatLng(42.71473, 1.71387));
 
-
-// var bounds = new L.LatLngBounds(arrayOfLatLngs);
-
-
+          var bounds = new L.LatLngBounds(arrayOfLatLngs);    
 
           var map = new L.Map('map', 
           {

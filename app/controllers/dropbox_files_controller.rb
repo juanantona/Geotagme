@@ -9,6 +9,7 @@ class DropboxFilesController < ApplicationController
   def view_photos
 
     @photos = DropboxFile.where(supplier_id: current_user.supplier_id)
+    
     @points=[]
 
     @photos.each do |photo|
@@ -27,7 +28,7 @@ class DropboxFilesController < ApplicationController
 
     offset = @photos_downloaded_previous.length
 
-    # download_photos_and_save_db_record()
+    #download_photos_and_save_db_record()
 
     @photos_downloaded_now = DropboxFile.where(supplier_id: current_user.supplier_id).order(created_at: :asc).offset(offset)
 
@@ -40,7 +41,7 @@ class DropboxFilesController < ApplicationController
   def download_photos_and_save_db_record()
 
     @client = dropbox_client
-    @photo_folder = "/photos"
+    @photo_folder = "/Cargas de cámara"
 
     if @client.ls(@photo_folder).any?
 
