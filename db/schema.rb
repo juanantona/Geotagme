@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150519132803) do
+ActiveRecord::Schema.define(version: 20150522170820) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -31,14 +31,21 @@ ActiveRecord::Schema.define(version: 20150519132803) do
     t.datetime "photo_timestamps"
   end
 
+  create_table "permissions", force: true do |t|
+    t.integer  "user_id",                null: false
+    t.integer  "observer_id",            null: false
+    t.date     "init_period_permission"
+    t.date     "final_period_permision"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
   create_table "users", force: true do |t|
     t.string   "name",            null: false
     t.string   "email",           null: false
     t.string   "password_digest", null: false
-    t.string   "role",            null: false
     t.string   "token"
     t.string   "secret"
-    t.integer  "supplier_id"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
   end
