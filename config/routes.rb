@@ -1,8 +1,6 @@
 Rails.application.routes.draw do
   
   root to: 'site#home'
-  get '/bla' => 'bla#ble'
-  get '/bli' => 'bla#bli'
   get '/signup' => 'users#new', as: :users
 
   get '/dropbox/authorize'   => 'users#authorize', as: :dropbox_auth

@@ -1,9 +1,23 @@
-<h1>GEOTAGME!</h1>
+<body class="login-img3-body">
 
+    <div class="container">
 
-<%= link_to "SignUp", signup_path %><br>
+      <form class="login-form" action="index.html">        
+        <div class="login-wrap">
+            <p class="login-img"><i class="icon_lock_alt"></i></p>
+            <div class="input-group">
+              <span class="input-group-addon"><i class="icon_profile"></i></span>
+              <input type="text" class="form-control" placeholder="Username" autofocus>
+            </div>
+            <div class="input-group">
+                <span class="input-group-addon"><i class="icon_key_alt"></i></span>
+                <input type="password" class="form-control" placeholder="Password">
+            </div>
+            <button class="btn btn-primary btn-lg btn-block" type="submit">Login</button>
+            <button onclick="window.location.href='/dropbox/authorize'" class="btn btn-info btn-lg btn-block fa fa-dropbox"type="button"></button>
+            <p>Connect with you dropbox account?</p>
+        </div>
+      </form>
+    </div>
 
-<%= link_to "SignIn", login_path %><br>
-
-
-<h3><p>Powered By Juan Antona</p></h3>
+</body>

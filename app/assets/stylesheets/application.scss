@@ -1,0 +1,29 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any styles
+ * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
+ * file per style scope.
+ *
+ * require_tree .
+ * require_self
+ *= require nice_admin/css/bootstrap.min
+ *= require nice_admin/css/bootstrap-theme
+ *= require nice_admin/css/elegant-icons-style
+ *= require nice_admin/css/font-awesome.min
+ *= require nice_admin/css/style
+ *= require nice_admin/css/style-responsive
+ 
+ * require nice_admin/fullcalendar
+ * require nice_admin/jquery-jvectormap-1.2.2
+ * require nice_admin/jquery-ui-1.10.4.min
+ * require nice_admin/line-icons
+ * require nice_admin/owl.carousel
+ * require nice_admin/widgets
+ * require nice_admin/xcharts.min
+ */
