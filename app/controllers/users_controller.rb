@@ -21,54 +21,35 @@ class UsersController < ApplicationController
 
 	    @client = Dropbox::API::Client.new(:token => session[:access_token], :secret => session[:access_secret_token])
         
-        @user = User.new
-	    @user.name = @client.account.display_name
-	    @user.email = @client.account.email
-        
-        render 'new'
+        if User.exists?(:email => @client.account.email)
+	    	@user = User.find_by email: @user.email
+	    	@user.token = session[:access_token]
+		    @user.secret = session[:access_secret_token]
+		    @user.save
+        	redirect_to dashboard_path
+        else
+            create(@client)
+        end	
     
     end
 
-    def new
-	   @user = User.new
-	end
-
-    def create
+    def create(client)
 		
-		@user = User.new(users_params)
+		@user = User.new
+		@user.name = client.account.display_name
+		@user.email = client.account.email
 		@user.token = session[:access_token]
 		@user.secret = session[:access_secret_token]
-		@user.role = "supplier"
-
+		
 		if @user.save
 			session[:user_id] = @user.id
-			@user.supplier_id = @user.id
 			@user.save
-			# session[] es un objeto donde tu almacenas las variables de sesion
-			# la key :user_id la estoy creando en este mismo momento
-			# cookie[] es otro objeto disponible para almacenar cosas 
-			# session y cookie siempre estan disponibles en todas las requests
+
 			redirect_to dashboard_path
 		else
-		    render :new
+		    render '/'
 		end    	
 		
 	end
 
-	def has_secure_password 
-		
-	end
-
-private
-
-	def users_params
-		params
-		  .require(:user)
-		  .permit(:name, 
-		   :email,
-		   :password,
-		   :password_confirmation
-		  )	   
-		
-	end	
 end
