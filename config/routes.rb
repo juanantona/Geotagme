@@ -5,17 +5,15 @@ Rails.application.routes.draw do
   get '/dropbox/authorize'   => 'users#authorize', as: :dropbox_auth
   get '/dropbox/callback' => 'users#callback', :as =>  :dropbox_callback
 
-  get '/dashboard/#modal_form' => 'observers#new'
-  post '/dashboard/#modal_form' => 'observers#create'
+  get '/dashboard' => 'dropbox_files#view_photos_on_dashboard', as: :dashboard
+  get '/download_photos' => 'dropbox_files#download_photos'
 
   get '/login' => 'sessions#new', as: :login
   post '/login' => 'sessions#create'
   get '/logout' => 'sessions#destroy'
 
-  get '/dashboard' => 'dropbox_files#view_photos', as: :view_photos
-  get '/download_photos' => 'dropbox_files#download_photos'
-
-
+  get '/dashboard/#modal_form' => 'observers#new'
+  post '/dashboard/#modal_form' => 'observers#create'
 
   #################################################################################
 

@@ -124,11 +124,11 @@
     						
                         <div class="panel-body" style="height:700px;">
 
-                                <ul id="photo_carrusel">
+                                <ul id="photo-carrusel">
 
                                     <% @photos.each do |photo| %>
                                        <li><%= photo.photo_timestamps %></li>
-                                       <img src=<%= photo.url %> class="img-thumbnail" />
+                                       <img src=<%= photo.url %> class="thumbnail" />
                                     <% end %>       
 
                                 </ul>
@@ -177,6 +177,6 @@
   <script src="/assets/nice_admin/js/scripts.js"></script>
   
 <!-- ajax load photos -->
-  <script src="/assets/dropbox_files.js"></script>
+  <script src="/assets/launch_ajax_download_photos.js"></script>
   
   

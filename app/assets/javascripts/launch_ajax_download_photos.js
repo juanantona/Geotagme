@@ -7,11 +7,11 @@ $(document).ready(function()
         url: "/download_photos",
         type: "GET",
         success: function(data){
-            data.moreThings.forEach(function(photo)
+            data.newPhotos.forEach(function(photo)
             {
-                $("#photo_carrusel").append($("<li>").html(photo.photo_timestamps));
+                $("#photo-carrusel").append($("<li>").html(photo.photo_timestamps));
                 var img = '<img src=' + photo.url + ' class="thumbnail">';
-                $("#photo_carrusel").append(img);
+                $("#photo-carrusel").append(img);
             });
         },
         
