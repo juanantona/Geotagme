@@ -37,35 +37,32 @@ class DropboxFilesController < ApplicationController
     if client.ls(dropbox_folder).any?
 
       client.ls(dropbox_folder).each do |dropbox_element|
-                      
-         unless dropbox_element.is_dir?
-           photo_in_db = DropboxFile.where(url: dropbox_element.direct_url.url).where(user_id: current_user.id)
-                      
-           unless photo_in_db.exists?
-             app_folder = "/app/assets/images/user_photos/"
-             photo_name = dropbox_element.path.to_s.split("/").last
-             photo_path = Rails.root.to_s + app_folder + photo_name
-
-             download_photo(dropbox_element, photo_path)
-                               
-           end
+        unless dropbox_element.is_dir?
+           download_photo(dropbox_element)
         end
       end
     end
   end
 
-  def download_photo(photo, photo_path)
-    
-    begin
-      open(photo_path, 'wb') do |file|
-         file << photo.download
+  def download_photo(photo)
+     
+    photo_in_db = DropboxFile.where(url: photo.direct_url.url).where(user_id: current_user.id)
+    unless photo_in_db.exists?
+      app_folder = "/app/assets/images/user_photos/"
+      photo_name = photo.path.to_s.split("/").last
+      photo_path = Rails.root.to_s + app_folder + photo_name
+      
+      begin
+        open(photo_path, 'wb') do |file|
+           file << photo.download
+        end
+
+        save_db_record(photo, photo_path)
+
+      rescue
+        puts "Exception occured while downloading..."
       end
-    rescue
-      puts "Exception occured while downloading..."
     end
-
-    save_db_record(photo, photo_path)
-
   end
 
   def save_db_record(photo, photo_path)
