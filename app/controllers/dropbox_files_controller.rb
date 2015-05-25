@@ -62,26 +62,31 @@ class DropboxFilesController < ApplicationController
     end
   end
 
-  def save_db_record(photo, photo_path)
+  def save_db_record(photo, path)
 
-     local_file = File.open(photo_path)
+     local_file = File.open(path)
      
      record = DropboxFile.new(:image => local_file)
      record.user_id = current_user.id
      record.url = photo.direct_url.url
      record.path = photo.path
-     
-     exif_data = EXIFR::JPEG.new(photo_path)
-     begin
-        record.geolocation = "POINT(#{exif_data.gps.latitude} #{exif_data.gps.longitude})"
-        record.photo_timestamps = exif_data.exif[:date_time_digitized]
-        record.save
-     rescue
-        puts "Photo hasn't geometadata"
-     end 
-      
+     record.geolocation = photo_geo_metadata(path)
+     exif_data = EXIFR::JPEG.new(path)
+     record.photo_timestamps = exif_data.exif[:date_time_digitized]
+     record.save
+          
      local_file.close
        
   end
 
+  def photo_geo_metadata(path)
+
+    exif_data = EXIFR::JPEG.new(path)
+
+    begin
+      return "POINT(#{exif_data.gps.latitude} #{exif_data.gps.longitude})"
+    rescue
+      puts "Photo hasn't geometadata"
+    end  
+  end
 end
