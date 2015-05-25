@@ -12,10 +12,7 @@ class SessionsController < ApplicationController
 		
 		if (@user && @user.authenticate(params[:password]))
 			session[:user_id] = @user.id
-			session[:access_token]  = @user.token
-	        session[:access_secret_token]  = @user.secret
-	        session[:supplier_id] = @user.supplier_id
-			
+				        			
 			redirect_to dashboard_path
 
 		else 
@@ -27,10 +24,8 @@ class SessionsController < ApplicationController
 	# used to log a user out
 	def destroy
 		session[:user_id] = nil
-		session[:access_token]  = nil
-	    session[:access_secret_token]  = nil
-	    session[:supplier_id] = nil
-		redirect_to login_path 
+			    
+		redirect_to root_path 
 		
 	end
 end

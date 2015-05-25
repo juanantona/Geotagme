@@ -1,36 +1,22 @@
 class DropboxFilesController < ApplicationController
   
-  def dashboard
-      
-    render 'dashboard'
-        
-  end
-
   def view_photos
 
-    @photos = DropboxFile.where(supplier_id: current_user.supplier_id)
+    @photos = DropboxFile.where(supplier_id: current_user.id)
     
-    @points=[]
-
-    @photos.each do |photo|
-         @points << [photo.geolocation.lon, photo.geolocation.lat]
-    end 
-
-
-
-    render "view_photos"
+    render "dashboard"
       
   end
 
   def download_photos
 
-    @photos_downloaded_previous = DropboxFile.where(supplier_id: current_user.supplier_id)
+    @photos_downloaded_previous = DropboxFile.where(supplier_id: current_user.id)
 
     offset = @photos_downloaded_previous.length
 
-    #download_photos_and_save_db_record()
+    download_photos_and_save_db_record()
 
-    @photos_downloaded_now = DropboxFile.where(supplier_id: current_user.supplier_id).order(created_at: :asc).offset(offset)
+    @photos_downloaded_now = DropboxFile.where(supplier_id: current_user.id).order(created_at: :asc).offset(offset)
 
     render :json => { moreThings: @photos_downloaded_now }
     
@@ -40,8 +26,9 @@ class DropboxFilesController < ApplicationController
 
   def download_photos_and_save_db_record()
 
-    @client = dropbox_client
-    @photo_folder = "/Cargas de cámara"
+    @client = Dropbox::API::Client.new(:token => current_user.token, :secret => current_user.secret)
+
+    @photo_folder = "/photos"
 
     if @client.ls(@photo_folder).any?
 
@@ -51,7 +38,7 @@ class DropboxFilesController < ApplicationController
                    
            destination_file_full_path = Rails.root.to_s + "/" + dropbox_element.path.to_s.split("/").last
            
-           unless DropboxFile.where(url: dropbox_element.direct_url.url).where(supplier_id: current_user.supplier_id).exists?
+           unless DropboxFile.where(url: dropbox_element.direct_url.url).where(supplier_id: current_user.id).exists?
              
              # remote_photo = open(photo.direct_url.url,:ssl_verify_mode => OpenSSL::SSL::VERIFY_NONE).read
              
@@ -76,15 +63,24 @@ class DropboxFilesController < ApplicationController
      local_file = File.open(destination_file_full_path)
      
      record = DropboxFile.new(:image => local_file)
-     record.supplier_id = current_user.supplier_id
+     record.supplier_id = current_user.id
      record.url = dropbox_element.direct_url.url
      record.path = dropbox_element.path
      
      exif_data = EXIFR::JPEG.new(destination_file_full_path)
-     record.geolocation = "POINT(#{exif_data.gps.latitude} #{exif_data.gps.longitude})"
-     record.photo_timestamps = exif_data.exif[:date_time_digitized]
+     
+
+     begin
+        record.geolocation = "POINT(#{exif_data.gps.latitude} #{exif_data.gps.longitude})"
+        record.photo_timestamps = exif_data.exif[:date_time_digitized]
+        record.save
+     rescue
+
+        puts "Photo hasn't geometadata"
+     
+     end 
       
-     record.save
+     
 
      # File.delete(local_file)
   

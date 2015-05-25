@@ -12,6 +12,7 @@
 //
 // require jquery
 // require jquery_ujs
+// require dropbox_files
 //  require turbolinks
 //  require_tree .
 //  require bootstrap-sprockets
@@ -42,3 +43,4 @@
 // require nice_admin/sparklines
 // require nice_admin/xcharts.min
 // require nice_admin/index
+

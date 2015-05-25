@@ -1,3 +1,182 @@
-<h1>WELCOME TO GEOTAGME</h1>
+ <!-- container section start -->
+  <section id="container" class="">
+      <!--header start-->
+      
+      <header class="header dark-bg">
+            <div class="toggle-nav">
+                <div class="icon-reorder tooltips" data-original-title="Toggle Navigation" data-placement="bottom"></div>
+            </div>
 
-<%= link_to "View photos", view_photos_path %>
+            <!--logo start-->
+            <a href="index.html" class="logo">GEOTAGME</a>
+            <!--logo end-->
+
+           
+            <div class="top-nav notification-row">                
+                <!-- notificatoin dropdown start-->
+                <ul class="nav pull-right top-menu">
+                    
+                    <!-- user login dropdown start-->
+                    <li class="dropdown">
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <span class="profile-ava">
+                                <img alt="" src="/assets/nice_admin/geotagme.png">
+                            </span>
+                            <span class="username"><%= current_user.name  %></span>
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu extended logout">
+                            <div class="log-arrow-up"></div>
+                            
+                            <li>
+                                <a href="<%= logout_path %>"><i class="icon_key_alt"></i> Log Out</a>
+                            </li>
+                            
+                        </ul>
+                    </li>
+                    <!-- user login dropdown end -->
+                </ul>
+                <!-- notificatoin dropdown end-->
+            </div>
+      </header>      
+      <!--header end-->
+
+      <!--sidebar start-->
+      <aside>
+          <div id="sidebar"  class="nav-collapse ">
+              <!-- sidebar menu start-->
+              <ul class="sidebar-menu">                
+                  <li class="">
+                      <a class="" href="/dashboard">
+                          <i class="icon_house_alt"></i>
+                          <span>Dashboard</span>
+                      </a>
+                  </li>
+                  <li class="sub-menu">
+                      <a href="javascript:;" class="">
+                          <i class="icon_table"></i>
+                          <span>Observers</span>
+                          <span class="menu-arrow arrow_carrot-right"></span>
+                      </a>
+                      <ul class="sub">
+                          <li><a class="" href="#modal_form" data-toggle="modal">Create observer</a></li>
+                          <li><a class="" href="form_validation.html">List</a></li>
+                      </ul>
+                  </li>       
+                  
+                  
+              </ul>
+              <!-- sidebar menu end-->
+          </div>
+      </aside>
+      <!--sidebar end-->
+
+      <!--main content start-->
+      <section id="main-content">
+        <section class="wrapper">
+            
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3 class="page-header"><i class="fa fa-laptop"></i> Dashboard</h3>
+                </div>
+            </div>
+              
+            <div class="row"><!-- page start-->
+		            <div class="col-lg-9 col-md-12">
+					
+					         <div class="panel panel-default">
+            						<div class="panel-heading">
+            							<h2><i class="fa fa-map-marker red"></i><strong>World</strong></h2>
+            							<div class="panel-actions">
+            								<a href="index.html#" class="btn-setting"><i class="fa fa-rotate-right"></i></a>
+            								<a href="index.html#" class="btn-minimize"><i class="fa fa-chevron-up"></i></a>
+            								<a href="index.html#" class="btn-close"><i class="fa fa-times"></i></a>
+            							</div>	
+            						</div>
+						
+                      <div class="panel-body-map" style="height:700px;">
+          							<div id="mymap" style="height:700px;">
+								          
+                          <!-- Mapa-->
+
+                          <script src="/assets/render_map.js"></script>
+
+                          <script>  
+                            
+                            <% @photos.each do |photo| %>
+                                L.marker([<%= photo.geolocation.longitude %>, <%= photo.geolocation.latitude %>], {draggable: false}).addTo(map);
+                            <% end %>
+
+                          </script>
+								          
+
+							          </div>	
+						          </div>
+						       </div>
+				        </div>
+
+    				    <div class="col-lg-3 col-md-12">
+    					
+    					      <div class="panel panel-default">
+            						<div class="panel-heading">
+            							<h2><i class="fa fa-map-marker red"></i><strong>Photos</strong></h2>
+            						</div>
+    						
+                        <div class="panel-body" style="height:700px;">
+
+                                <ul id="photo_carrusel">
+
+                                    <% @photos.each do |photo| %>
+                                       <li><%= photo.photo_timestamps %></li>
+                                       <img src=<%= photo.url %> class="img-thumbnail" />
+                                    <% end %>       
+
+                                </ul>
+        	 
+    	
+    					          </div>
+    				        </div>
+                </div>
+			       </div><!-- page end--> 
+
+          </section>
+      </section><!--main content end-->
+
+
+  </section><!-- container section end -->
+  
+          <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="modal_form" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                            <h4 class="modal-title">New observer</h4>
+                        </div>
+                        <div class="modal-body">
+
+                            <form role="form">
+
+                             <!-- modal form -->
+                                                                
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+<!-- javascripts -->
+
+<!-- nice_theme -->
+  <script src="/assets/nice_admin/js/jquery.js"></script>
+  <script src="/assets/nice_admin/js/bootstrap.min.js"></script>
+  <!-- nice scroll -->
+  <script src="/assets/nice_admin/js/jquery.scrollTo.min.js"></script>
+  <script src="/assets/nice_admin/js/jquery.nicescroll.js" type="text/javascript"></script>
+  <!--custome script for all page -->
+  <script src="/assets/nice_admin/js/scripts.js"></script>
+  
+<!-- ajax load photos -->
+  <script src="/assets/dropbox_files.js"></script>
+  
+  

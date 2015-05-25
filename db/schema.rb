@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150524212343) do
+ActiveRecord::Schema.define(version: 20150525094626) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -29,6 +29,17 @@ ActiveRecord::Schema.define(version: 20150524212343) do
     t.spatial  "geolocation",        limit: {:srid=>4326, :type=>"point", :geographic=>true}
     t.string   "path"
     t.datetime "photo_timestamps"
+  end
+
+  create_table "observers", force: true do |t|
+    t.integer  "user_id",                    null: false
+    t.string   "name",                       null: false
+    t.string   "email",                      null: false
+    t.string   "password_digest",            null: false
+    t.date     "start_temp_permissions",     null: false
+    t.date     "terminate_temp_permissions", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "permissions", force: true do |t|

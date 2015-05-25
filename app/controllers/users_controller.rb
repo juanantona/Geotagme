@@ -12,44 +12,26 @@ class UsersController < ApplicationController
 
     def callback
 	    
-	    consumer = Dropbox::API::OAuth.consumer(:authorize)
-	    hash = { oauth_token: session[:request_token], oauth_token_secret: session[:request_token_secret]}
-	    request_token  = OAuth::RequestToken.from_hash(consumer, hash)
-	    access_token = request_token.get_access_token(:oauth_verifier => params[:oauth_token])
-	    session[:access_token]  = access_token.token
-	    session[:access_secret_token] = access_token.secret
-
-	    @client = Dropbox::API::Client.new(:token => session[:access_token], :secret => session[:access_secret_token])
+	    access_token = get_access_token
+	    
+	    client = Dropbox::API::Client.new(:token => access_token.token, :secret => access_token.secret)
         
-        if User.exists?(:email => @client.account.email)
-	    	@user = User.find_by email: @user.email
-	    	@user.token = session[:access_token]
-		    @user.secret = session[:access_secret_token]
-		    @user.save
-        	redirect_to dashboard_path
-        else
-            create(@client)
-        end	
+        @user = User.find_or_create(client.account.display_name, client.account.email)
+        @user.set_dropbox_credentials(access_token)
+		session[:user_id] = @user.id
+			
+		redirect_to dashboard_path	
     
     end
 
-    def create(client)
-		
-		@user = User.new
-		@user.name = client.account.display_name
-		@user.email = client.account.email
-		@user.token = session[:access_token]
-		@user.secret = session[:access_secret_token]
-		
-		if @user.save
-			session[:user_id] = @user.id
-			@user.save
+    def get_access_token
 
-			redirect_to dashboard_path
-		else
-		    render '/'
-		end    	
-		
-	end
-
+    	consumer = Dropbox::API::OAuth.consumer(:authorize)
+	    hash = { oauth_token: session[:request_token], oauth_token_secret: session[:request_token_secret]}
+	    request_token  = OAuth::RequestToken.from_hash(consumer, hash)
+	    access_token = request_token.get_access_token(:oauth_verifier => params[:oauth_token])
+    	
+    	access_token
+    end
+    
 end

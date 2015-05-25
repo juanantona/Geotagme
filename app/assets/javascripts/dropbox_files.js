@@ -1,5 +1,5 @@
-// Place all the behaviors and hooks related to the matching controller here.
-// All this logic will automatically be available in application.js.
+// AJAX call to download photos that aren't in db app
+
 $(document).ready(function() 
 {
     $.ajax(

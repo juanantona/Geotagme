@@ -18,8 +18,6 @@ class ApplicationController < ActionController::Base
   	end
   end
 
-  def dropbox_client
-    @dropboxclient ||= Dropbox::API::Client.new(:token => session[:access_token], :secret => session[:access_secret_token])
-  end 
+  
 
 end

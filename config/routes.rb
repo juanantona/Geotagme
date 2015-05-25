@@ -1,19 +1,18 @@
 Rails.application.routes.draw do
   
   root to: 'site#home'
-  get '/signup' => 'users#new', as: :users
-
+  
   get '/dropbox/authorize'   => 'users#authorize', as: :dropbox_auth
   get '/dropbox/callback' => 'users#callback', :as =>  :dropbox_callback
 
-  post '/signup' => 'users#create'
-  
+  get '/dashboard/#modal_form' => 'observers#new'
+  post '/dashboard/#modal_form' => 'observers#create'
+
   get '/login' => 'sessions#new', as: :login
   post '/login' => 'sessions#create'
   get '/logout' => 'sessions#destroy'
 
-  get '/dashboard' => 'dropbox_files#dashboard', as: :dashboard
-  get '/view_photos' => 'dropbox_files#view_photos', as: :view_photos
+  get '/dashboard' => 'dropbox_files#view_photos', as: :view_photos
   get '/download_photos' => 'dropbox_files#download_photos'
 
 
