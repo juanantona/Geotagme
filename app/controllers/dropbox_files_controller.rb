@@ -21,9 +21,7 @@ class DropboxFilesController < ApplicationController
     sync_photos_with_dropbox()
 
     photos_in_db_after_sync = DropboxFile.where(user_id: current_user.id).order(created_at: :asc)
-    new_photos_to_render = photos_in_db_after_sync.offset(previous_photos)
-
-    return new_photos_to_render
+    return photos_in_db_after_sync.offset(previous_photos)
       
   end
 
@@ -45,10 +43,10 @@ class DropboxFilesController < ApplicationController
   end
 
   def download_photo(photo)
-     
+    
+    app_folder = "/app/assets/images/user_photos/"
     photo_in_db = DropboxFile.where(url: photo.direct_url.url).where(user_id: current_user.id)
     unless photo_in_db.exists?
-      app_folder = "/app/assets/images/user_photos/"
       photo_name = photo.path.to_s.split("/").last
       photo_path = Rails.root.to_s + app_folder + photo_name
       
@@ -56,7 +54,6 @@ class DropboxFilesController < ApplicationController
         open(photo_path, 'wb') do |file|
            file << photo.download
         end
-
         save_db_record(photo, photo_path)
 
       rescue
