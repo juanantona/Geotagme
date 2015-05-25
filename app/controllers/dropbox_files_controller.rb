@@ -9,27 +9,27 @@ class DropboxFilesController < ApplicationController
 
   def render_new_photos
     
-    new_photos_to_render = sync_photos_with_dropbox
     render :json => { newPhotos: new_photos_to_render }
     
   end
 
-  def sync_photos_with_dropbox
+  def new_photos_to_render
 
     photos_in_db = DropboxFile.where(user_id: current_user.id)
     previous_photos = photos_in_db.length
 
-    download_photos_and_save_db_record()
+    sync_photos_with_dropbox()
 
-    photos_in_db_after_download = DropboxFile.where(user_id: current_user.id)
+    photos_in_db_after_download = DropboxFile.where(user_id: current_user.id).order(created_at: :asc)
+    new_photos_to_render = photos_in_db_after_download.offset(previous_photos)
 
-    return photos_in_db_after_download.order(created_at: :asc).offset(previous_photos)
+    return new_photos_to_render
       
   end
 
   private
 
-  def download_photos_and_save_db_record()
+  def sync_photos_with_dropbox()
 
     client = Dropbox::API::Client.new(:token => current_user.token, :secret => current_user.secret)
     photo_folder = "/photos"
