@@ -103,7 +103,7 @@
 
                           <script>  
                             
-                            <% @photos.each do |photo| %>
+                            <% @photos_in_db.each do |photo| %>
                                 L.marker([<%= photo.geolocation.longitude %>, <%= photo.geolocation.latitude %>], {draggable: false}).addTo(map);
                             <% end %>
 
@@ -126,7 +126,7 @@
 
                                 <ul id="photo-carrusel">
 
-                                    <% @photos.each do |photo| %>
+                                    <% @photos_in_db.each do |photo| %>
                                        <li><%= photo.photo_timestamps %></li>
                                        <img src=<%= photo.url %> class="thumbnail" />
                                     <% end %>       
@@ -177,6 +177,6 @@
   <script src="/assets/nice_admin/js/scripts.js"></script>
   
 <!-- ajax load photos -->
-  <script src="/assets/launch_ajax_download_photos.js"></script>
+  <script src="/assets/launch_ajax_sync_photos_with_dropbox.js"></script>
   
   

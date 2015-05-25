@@ -2,21 +2,29 @@ class DropboxFilesController < ApplicationController
   
   def view_photos_on_dashboard
 
-    @photos = DropboxFile.where(user_id: current_user.id)
+    @photos_in_db = DropboxFile.where(user_id: current_user.id)
     render "dashboard"
       
   end
 
-  def download_photos
-
-    photos_in_db = DropboxFile.where(user_id: current_user.id)
-    offset = photos_in_db.length
-
-    download_photos_and_save_db_record()
+  def render_new_photos
     
-    new_photos_to_render = photos_in_db.order(created_at: :asc).offset(offset)
+    new_photos_to_render = sync_photos_with_dropbox
     render :json => { newPhotos: new_photos_to_render }
     
+  end
+
+  def sync_photos_with_dropbox
+
+    photos_in_db = DropboxFile.where(user_id: current_user.id)
+    previous_photos = photos_in_db.length
+
+    download_photos_and_save_db_record()
+
+    photos_in_db_after_download = DropboxFile.where(user_id: current_user.id)
+
+    return photos_in_db_after_download.order(created_at: :asc).offset(previous_photos)
+      
   end
 
   private
@@ -34,10 +42,11 @@ class DropboxFilesController < ApplicationController
          unless dropbox_element.is_dir?
                    
            photo_in_db = DropboxFile.where(url: dropbox_element.direct_url.url).where(user_id: current_user.id)
-
+           app_folder = "/app/assets/images/user_photos/"
+           
            unless photo_in_db.exists?
 
-             photo_name = photo.path.to_s.split("/").last
+             photo_name = dropbox_element.path.to_s.split("/").last
              photo_destination_path = Rails.root.to_s + app_folder + photo_name
 
              download_photo(dropbox_element, photo_destination_path)
@@ -51,8 +60,7 @@ class DropboxFilesController < ApplicationController
   end
 
   def download_photo(photo, photo_path)
-    app_folder = "/app/assets/images/user_photos/"
-
+    
     begin
       open(photo_path, 'wb') do |file|
          file << photo.download

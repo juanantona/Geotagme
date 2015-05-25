@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   get '/dropbox/callback' => 'users#callback', :as =>  :dropbox_callback
 
   get '/dashboard' => 'dropbox_files#view_photos_on_dashboard', as: :dashboard
-  get '/download_photos' => 'dropbox_files#download_photos'
+  get '/render_new_photos' => 'dropbox_files#render_new_photos'
 
   get '/login' => 'sessions#new', as: :login
   post '/login' => 'sessions#create'
