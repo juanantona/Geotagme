@@ -20,8 +20,8 @@ class DropboxFilesController < ApplicationController
 
     sync_photos_with_dropbox()
 
-    photos_in_db_after_download = DropboxFile.where(user_id: current_user.id).order(created_at: :asc)
-    new_photos_to_render = photos_in_db_after_download.offset(previous_photos)
+    photos_in_db_after_sync = DropboxFile.where(user_id: current_user.id).order(created_at: :asc)
+    new_photos_to_render = photos_in_db_after_sync.offset(previous_photos)
 
     return new_photos_to_render
       
@@ -32,26 +32,21 @@ class DropboxFilesController < ApplicationController
   def sync_photos_with_dropbox()
 
     client = Dropbox::API::Client.new(:token => current_user.token, :secret => current_user.secret)
-    photo_folder = "/photos"
+    dropbox_folder = "/photos"
     
+    if client.ls(dropbox_folder).any?
 
-    if client.ls(photo_folder).any?
-
-      client.ls(photo_folder).each do |dropbox_element|
+      client.ls(dropbox_folder).each do |dropbox_element|
                       
          unless dropbox_element.is_dir?
-                   
            photo_in_db = DropboxFile.where(url: dropbox_element.direct_url.url).where(user_id: current_user.id)
-           app_folder = "/app/assets/images/user_photos/"
-           
+                      
            unless photo_in_db.exists?
-
+             app_folder = "/app/assets/images/user_photos/"
              photo_name = dropbox_element.path.to_s.split("/").last
-             photo_destination_path = Rails.root.to_s + app_folder + photo_name
+             photo_path = Rails.root.to_s + app_folder + photo_name
 
-             download_photo(dropbox_element, photo_destination_path)
-             
-             save_db_record(dropbox_element, photo_destination_path)
+             download_photo(dropbox_element, photo_path)
                                
            end
         end
@@ -68,6 +63,8 @@ class DropboxFilesController < ApplicationController
     rescue
       puts "Exception occured while downloading..."
     end
+
+    save_db_record(photo, photo_path)
 
   end
 
