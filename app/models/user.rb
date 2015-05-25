@@ -5,12 +5,12 @@ class User < ActiveRecord::Base
 	def self.find_or_create(name, email)
 
 		if exists?(:email => email)
-        	user = find_by email: email
-        else
-            user = create_for(name, email)
-        end
+	    	user = find_by email: email
+	    else
+	        user = create_for(name, email)
+	    end
 
-        user
+	    user
 		
 	end
 
@@ -33,5 +33,4 @@ class User < ActiveRecord::Base
 		self.save
 		
 	end
-
 end

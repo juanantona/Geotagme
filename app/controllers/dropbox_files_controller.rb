@@ -54,39 +54,30 @@ class DropboxFilesController < ApplicationController
         open(photo_path, 'wb') do |file|
            file << photo.download
         end
-        save_db_record(photo, photo_path)
-
       rescue
         puts "Exception occured while downloading..."
       end
+
+      save_db_record(photo, photo_path)
     end
   end
 
   def save_db_record(photo, path)
 
-     local_file = File.open(path)
+    local_file = File.open(path)
      
-     record = DropboxFile.new(:image => local_file)
-     record.user_id = current_user.id
-     record.url = photo.direct_url.url
-     record.path = photo.path
-     record.geolocation = photo_geo_metadata(path)
-     exif_data = EXIFR::JPEG.new(path)
-     record.photo_timestamps = exif_data.exif[:date_time_digitized]
-     record.save
-          
-     local_file.close
-       
-  end
-
-  def photo_geo_metadata(path)
-
-    exif_data = EXIFR::JPEG.new(path)
-
+    record = DropboxFile.new(:image => local_file)
+    record.user_id = current_user.id
+    record.url = photo.direct_url.url
+    record.path = photo.path
     begin
-      return "POINT(#{exif_data.gps.latitude} #{exif_data.gps.longitude})"
-    rescue
-      puts "Photo hasn't geometadata"
-    end  
+      record.geolocation = DropboxFile.metadata(path, "photo_geodata")
+      record.photo_timestamps = DropboxFile.metadata(path, "photo_timestamp")
+      record.save
+    rescue  
+      puts "Exception occured while taking photo metadata..."
+    end
+    local_file.close
+       
   end
 end

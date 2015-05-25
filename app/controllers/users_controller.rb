@@ -33,5 +33,4 @@ class UsersController < ApplicationController
     	
     	access_token
     end
-    
 end
