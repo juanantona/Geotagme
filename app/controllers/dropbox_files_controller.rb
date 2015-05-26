@@ -1,10 +1,11 @@
 class DropboxFilesController < ApplicationController
-  
+   
+  def get_photo_owner
+    @photo_owner = DropboxFile.authorizer(session[:role], session[:user_id])
+  end
+
   def view_photos_on_dashboard
-
-    @authorizer = DropboxFile.authorizer(session[:role], session[:user_id])
-
-    @photos_in_db = DropboxFile.where(user_id: @authorizer)
+    @photos_in_db = DropboxFile.where(user_id: get_photo_owner)
     render "dashboard"
       
   end

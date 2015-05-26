@@ -22,7 +22,13 @@
                             <span class="profile-ava">
                                 <img alt="" src="/assets/nice_admin/geotagme.png">
                             </span>
-                            <span class="username"><%= current_user.name  %></span>
+                            <span class="username">
+                              <% if session[:role]=='photographer' %>
+                              <%= current_user.name  %>
+                              <% elsif session[:role]=='observer' %>
+                              <%= Observer.find_by_id(session[:user_id]).name %>
+                              <% end %>
+                            </span>
                             <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu extended logout">
