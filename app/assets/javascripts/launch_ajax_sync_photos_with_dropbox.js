@@ -1,4 +1,4 @@
-// AJAX call to download photos that aren't in db app
+// AJAX call to download photos that are not in db app
 
 $(document).ready(function() 
 {

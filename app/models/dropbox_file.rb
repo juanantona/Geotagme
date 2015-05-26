@@ -10,13 +10,12 @@ class DropboxFile < ActiveRecord::Base
 
   def self.metadata(path, metadata)
  	 
- 	exif_data = EXIFR::JPEG.new(path)
+ 	  exif_data = EXIFR::JPEG.new(path)
  	
-	if metadata = "photo_geodata"
+	  if metadata = "photo_geodata"
        return "POINT(#{exif_data.gps.latitude} #{exif_data.gps.longitude})"
     elsif metadata = "photo_timestamp"
        return exif_data.exif[:date_time_digitized]
     end 
-    
   end
 end

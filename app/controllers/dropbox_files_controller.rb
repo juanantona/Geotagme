@@ -77,7 +77,7 @@ class DropboxFilesController < ApplicationController
     rescue  
       puts "Exception occured while taking photo metadata..."
     end
+
     local_file.close
-       
   end
 end

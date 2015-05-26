@@ -1,0 +1,37 @@
+<%= form_for @observer do |f| %>
+
+      <div class="form-group">
+        <label>Name</label>
+        <%= f.text_field :name, class: 'form-control', placeholder: 'Name' %>
+      </div>
+
+      <div class="form-group">
+        <label>Email</label>
+        <%= f.text_field :email, class: 'form-control', placeholder: 'Email' %>
+      </div>
+
+      <div class="form-group">
+        <label>Pasword</label>
+        <%= f.password_field :email, class: 'form-control', placeholder: 'Password' %>
+      </div>
+
+      <div class="form-group">
+        <label>Pasword confirmation</label>
+        <%= f.password_field :email, class: 'form-control', placeholder: 'Pasword confirmation' %>
+      </div>
+
+      <div class="form-group">
+        <label>Start temporary permissions</label>
+        <%= f.date_field :start_temp_permissions, class: 'form-control' %>
+      </div>
+
+      <div class="form-group">
+        <label>Terminate temporary permissions</label>
+        <%= f.date_field :terminate_temp_permissions, class: 'form-control' %>
+      </div>
+
+      <div class="actions">
+        <%= f.submit 'Submit', id: 'btn_observer_save', class: 'btn btn-default' %>
+      </div>
+
+<% end %>
