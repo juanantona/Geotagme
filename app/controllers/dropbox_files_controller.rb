@@ -2,7 +2,9 @@ class DropboxFilesController < ApplicationController
   
   def view_photos_on_dashboard
 
-    @photos_in_db = DropboxFile.where(user_id: current_user.id)
+    @authorizer = DropboxFile.authorizer(session[:role], session[:user_id])
+
+    @photos_in_db = DropboxFile.where(user_id: @authorizer)
     render "dashboard"
       
   end
@@ -18,7 +20,7 @@ class DropboxFilesController < ApplicationController
     photos_in_db = DropboxFile.where(user_id: current_user.id)
     previous_photos = photos_in_db.length
 
-    sync_photos_with_dropbox()
+    # sync_photos_with_dropbox()
 
     photos_in_db_after_sync = DropboxFile.where(user_id: current_user.id).order(created_at: :asc)
     return photos_in_db_after_sync.offset(previous_photos)

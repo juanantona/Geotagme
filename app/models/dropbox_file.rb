@@ -8,13 +8,22 @@ class DropboxFile < ActiveRecord::Base
   
   validates_attachment_content_type :image, :content_type => ["image/jpeg", "image/jpg", "image/png"]
 
+  def self.authorizer(role, id)
+    if role == 'photographer'
+      return User.find_by_id(id).id
+    elsif role == 'observer'
+      binding.pry
+      return Observer.find_by_id(id).user_id
+    end      
+  end
+
   def self.metadata(path, metadata)
  	 
  	  exif_data = EXIFR::JPEG.new(path)
  	
-	  if metadata = "photo_geodata"
+	  if metadata == "photo_geodata"
        return "POINT(#{exif_data.gps.latitude} #{exif_data.gps.longitude})"
-    elsif metadata = "photo_timestamp"
+    elsif metadata == "photo_timestamp"
        return exif_data.exif[:date_time_digitized]
     end 
   end

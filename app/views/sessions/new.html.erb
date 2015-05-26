@@ -1,33 +1,33 @@
 <body class="login-img3-body">
 
-    <div class="container">
-      <h1 class="logo" style="font-size:120px;">geotagme</h1>
-      
-      <form class="login-form" action="/login" method="post" style="margin-top:100px;">        
-        
-        <div class="login-wrap">
-        
-            <p class="login-img"><i class="icon_lock_alt"></i></p>
-
-            <%= form_for @observer do |f| %>
+  <div class="container">
+    <h1 class="logo" style="font-size:120px;">geotagme</h1>
     
-            <div class="input-group">
-              <span class="input-group-addon"><i class="icon_mail"></i></span>
-              <%= f.text_field :email, class: 'form-control', placeholder: 'Email' %>
-            </div>
-            <div class="input-group">
-                <span class="input-group-addon"><i class="icon_key_alt"></i></span>
-                <%= f.password_field :password, class: 'form-control', placeholder: 'Password' %>
-            </div>
-            <div class="actions">
-                <%= f.submit 'Login', class: 'btn btn-primary btn-lg btn-block' %>
-            </div>
+    <form class="login-form" action="/login" method="post" style="margin-top:100px;">        
+      
+      <div class="login-wrap">
+      
+          <p class="login-img"><i class="icon_lock_alt"></i></p>
 
-            <% end %>
-            
-            <button onclick="window.location.href='/dropbox/authorize'" class="btn btn-info btn-lg btn-block fa fa-dropbox"type="button" style="margin-top:10px;"></button>
-            <p>Connect with you dropbox account?</p>
-        
-        </div>
-      </form>
-    </div>
+          <%= form_for @observer do |f| %>
+  
+              <div class="input-group">
+                <span class="input-group-addon"><i class="icon_mail"></i></span>
+                <%= f.text_field :email, class: 'form-control', placeholder: 'Email' %>
+              </div>
+              <div class="input-group">
+                  <span class="input-group-addon"><i class="icon_key_alt"></i></span>
+                  <%= f.password_field :password, class: 'form-control', placeholder: 'Password' %>
+              </div>
+              <div class="actions">
+                  <%= f.submit 'Login', class: 'btn btn-primary btn-lg btn-block' %>
+              </div>
+
+          <% end %>
+          
+          <button onclick="window.location.href='/dropbox/authorize'" class="btn btn-info btn-lg btn-block fa fa-dropbox"type="button" style="margin-top:10px;"></button>
+          <p>Connect with you dropbox account?</p>
+      
+      </div>
+    </form>
+  </div>

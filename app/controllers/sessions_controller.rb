@@ -6,25 +6,20 @@ class SessionsController < ApplicationController
 	end
 
 	def create
-		
-		@observer = Observer.find_by(email: params[:observer][:email])
-		
-		if (@user && @user.authenticate(params[:observer][:password]))
+		observer = Observer.find_by(email: params[:observer][:email])
+		binding.pry
+	    if (observer && observer.authenticate(params[:observer][:password]))
 			session[:user_id] = observer.id
-				        			
+			session[:role] = 'observer'
 			redirect_to dashboard_path
 
-		else 
+	    else 
 		    redirect_to	login_path, notice: "Wrong email or password"
-		end
-		
+	    end
 	end
 
-	# used to log a user out
 	def destroy
 		session[:user_id] = nil
-			    
 		redirect_to login_path 
-		
 	end
 end

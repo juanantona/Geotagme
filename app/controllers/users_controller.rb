@@ -19,6 +19,7 @@ class UsersController < ApplicationController
         @user = User.find_or_create(client.account.display_name, client.account.email)
         @user.set_dropbox_credentials(access_token)
 		session[:user_id] = @user.id
+		session[:role] = 'photographer'
 			
 		redirect_to dashboard_path	
     
