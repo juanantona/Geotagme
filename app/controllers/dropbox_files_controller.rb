@@ -1,29 +1,28 @@
 class DropboxFilesController < ApplicationController
    
   def get_photo_owner
-    @photo_owner = DropboxFile.authorizer(session[:role], session[:user_id])
+    photo_owner = DropboxFile.photo_owner(session[:role], session[:user_id])
   end
 
   def view_photos_on_dashboard
-    @photos_in_db = DropboxFile.where(user_id: get_photo_owner)
+    @photos_in_db = DropboxFile.where(user_id: get_photo_owner.id)
     render "dashboard"
       
   end
 
   def render_new_photos
-    
     render :json => { newPhotos: new_photos_to_render }
     
   end
 
   def new_photos_to_render
 
-    photos_in_db = DropboxFile.where(user_id: current_user.id)
+    photos_in_db = DropboxFile.where(user_id: get_photo_owner.id)
     previous_photos = photos_in_db.length
 
-    # sync_photos_with_dropbox()
+    sync_photos_with_dropbox()
 
-    photos_in_db_after_sync = DropboxFile.where(user_id: current_user.id).order(created_at: :asc)
+    photos_in_db_after_sync = DropboxFile.where(user_id: get_photo_owner.id).order(created_at: :asc)
     return photos_in_db_after_sync.offset(previous_photos)
       
   end
@@ -32,7 +31,7 @@ class DropboxFilesController < ApplicationController
 
   def sync_photos_with_dropbox()
 
-    client = Dropbox::API::Client.new(:token => current_user.token, :secret => current_user.secret)
+    client = Dropbox::API::Client.new(:token => get_photo_owner.token, :secret => get_photo_owner.secret)
     dropbox_folder = "/photos"
     
     if client.ls(dropbox_folder).any?
@@ -48,7 +47,7 @@ class DropboxFilesController < ApplicationController
   def download_photo(photo)
     
     app_folder = "/app/assets/images/user_photos/"
-    photo_in_db = DropboxFile.where(url: photo.direct_url.url).where(user_id: current_user.id)
+    photo_in_db = DropboxFile.where(url: photo.direct_url.url).where(user_id: get_photo_owner.id)
     unless photo_in_db.exists?
       photo_name = photo.path.to_s.split("/").last
       photo_path = Rails.root.to_s + app_folder + photo_name
@@ -60,7 +59,6 @@ class DropboxFilesController < ApplicationController
       rescue
         puts "Exception occured while downloading..."
       end
-
       save_db_record(photo, photo_path)
     end
   end
@@ -70,7 +68,7 @@ class DropboxFilesController < ApplicationController
     local_file = File.open(path)
      
     record = DropboxFile.new(:image => local_file)
-    record.user_id = current_user.id
+    record.user_id = get_photo_owner.id
     record.url = photo.direct_url.url
     record.path = photo.path
     begin

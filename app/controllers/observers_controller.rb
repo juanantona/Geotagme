@@ -7,7 +7,6 @@ class ObserversController < ApplicationController
 	end
 
 	def create
-
 		@observer = Observer.new(observer_params)
 		@observer.user_id = current_user.id
 
@@ -20,7 +19,6 @@ class ObserversController < ApplicationController
 	end
 
 	def has_secure_password 
-		
 	end
 
 	private

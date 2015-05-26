@@ -8,11 +8,12 @@ class DropboxFile < ActiveRecord::Base
   
   validates_attachment_content_type :image, :content_type => ["image/jpeg", "image/jpg", "image/png"]
 
-  def self.authorizer(role, id)
+  def self.photo_owner(role, id)
     if role == 'photographer'
       return User.find_by_id(id).id
     elsif role == 'observer'
-      return Observer.find_by_id(id).user_id
+      observer_host = Observer.find_by_id(id).user_id
+      return User.find_by_id(observer_host)
     end      
   end
 
