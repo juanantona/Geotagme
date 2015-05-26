@@ -12,7 +12,6 @@ class DropboxFile < ActiveRecord::Base
     if role == 'photographer'
       return User.find_by_id(id).id
     elsif role == 'observer'
-      binding.pry
       return Observer.find_by_id(id).user_id
     end      
   end
