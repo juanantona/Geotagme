@@ -4,7 +4,7 @@ class DropboxFilesController < ApplicationController
     photo_owner = DropboxFile.photo_owner(session[:role], session[:user_id])
   end
 
-  def view_photos_on_dashboard
+  def dashboard
     @photos_in_db = DropboxFile.where(user_id: get_photo_owner.id)
     render "dashboard"
       
@@ -45,9 +45,8 @@ class DropboxFilesController < ApplicationController
   end
 
   def download_photo(photo)
-    
     app_folder = "/app/assets/images/user_photos/"
-    photo_in_db = DropboxFile.where(url: photo.direct_url.url).where(user_id: get_photo_owner.id)
+    photo_in_db = DropboxFile.where(url: photo.share_url.url).where(user_id: get_photo_owner.id)
     unless photo_in_db.exists?
       photo_name = photo.path.to_s.split("/").last
       photo_path = Rails.root.to_s + app_folder + photo_name

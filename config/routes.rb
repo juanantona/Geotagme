@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   get  '/dropbox/authorize'   => 'users#authorize', as: :dropbox_auth
   get  '/dropbox/callback' => 'users#callback', :as =>  :dropbox_callback
 
-  get  '/dashboard' => 'dropbox_files#view_photos_on_dashboard', as: :dashboard
+  get  '/dashboard' => 'dropbox_files#dashboard', as: :dashboard
   get  '/render_new_photos' => 'dropbox_files#render_new_photos'
   
   get '/observers/new' => 'observers#new', as: :observer
