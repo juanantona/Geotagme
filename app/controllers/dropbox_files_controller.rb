@@ -18,10 +18,10 @@ class DropboxFilesController < ApplicationController
     photos_in_db = DropboxFile.where(user_id: get_photo_owner.id)
     previous_photos = photos_in_db.length
 
-    sync_photos = sync_photos_with_dropbox()
+    photos_in_dropbox = get_photos_in_dropbox()
 
-    sync_photos.each do |photo|
-      download_photo(photo)
+    photos_in_dropbox.each do |photo|
+      check_photo_and_dowload(photo)
     end  
 
     photos_in_db_after_sync = DropboxFile.where(user_id: get_photo_owner.id).order(created_at: :asc)
@@ -29,42 +29,49 @@ class DropboxFilesController < ApplicationController
       
   end
 
-  private
-
-  def sync_photos_with_dropbox()
-
-    client = Dropbox::API::Client.new(:token => get_photo_owner.token, :secret => get_photo_owner.secret)
-    dropbox_folder = "/photos"
-
-    dropbox_elements = []
-    
-    if client.ls(dropbox_folder).any?
-
-      client.ls(dropbox_folder).each do |dropbox_element|
-        unless dropbox_element.is_dir?
-           dropbox_elements << dropbox_element
-        end
-      end
-    end
-    dropbox_elements
-  end
-
-  def download_photo(photo)
-    
+  def check_photo_and_dowload(photo)
     @photo_in_db = DropboxFile.where(user_id: get_photo_owner.id).find_in_db(photo.share_url.url)
     if @photo_in_db != nil
        @photo_in_db.set_direct_url(photo) 
     else  
-        begin
-          open(get_photo_path(photo), 'wb') do |file|
-             file << photo.download
-          end
-        rescue
-          puts "Exception occured while downloading..."
-        end
-        save_db_record(photo, get_photo_path(photo))
+        download_photo(photo)
     end
+  
   end
+
+  def download_photo(photo)
+      begin
+        open(get_photo_path(photo), 'wb') do |file|
+             file << photo.download
+        end
+      rescue
+        puts "Exception occured while downloading..."
+      end
+      save_db_record(photo, get_photo_path(photo))
+  end
+
+  private
+
+  def get_photos_in_dropbox()
+
+    client = Dropbox::API::Client.new(:token => get_photo_owner.token, :secret => get_photo_owner.secret)
+    photos_in_dropbox = []
+    
+    if client.ls(get_dropbox_folder).any?
+      client.ls(get_dropbox_folder).each do |dropbox_element|
+        unless dropbox_element.is_dir?
+           photos_in_dropbox << dropbox_element
+        end
+      end
+    end
+    photos_in_dropbox
+  end
+
+  def get_dropbox_folder
+    return dropbox_folder = "/photos"
+  end
+
+ 
 
   def get_photo_path(photo)
     app_folder = "/app/assets/images/user_photos/"
