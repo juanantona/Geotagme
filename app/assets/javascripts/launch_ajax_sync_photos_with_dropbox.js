@@ -2,22 +2,26 @@
 
 $(document).ready(function() 
 {
-    $.ajax(
+    if($("#dashboard").length>0)
     {
-        url: "/render_new_photos",
-        type: "GET",
-        success: function(data){
-            data.newPhotos.forEach(function(photo)
+         $.ajax(
+         {
+            url: "/render_new_photos",
+            type: "GET",
+            success: function(data){
+                data.newPhotos.forEach(function(photo)
+                {
+                    $("#photo-carrusel").append($("<li>").html(photo.photo_timestamps));
+                    var img = '<img src=' + photo.url + ' class="thumbnail">';
+                    $("#photo-carrusel").append(img);
+                });
+            },
+            
+            error: function()
             {
-                $("#photo-carrusel").append($("<li>").html(photo.photo_timestamps));
-                var img = '<img src=' + photo.url + ' class="thumbnail">';
-                $("#photo-carrusel").append(img);
-            });
-        },
-        
-        error: function()
-        {
-            console.log("nop");
-        }
-    });
+                console.log("nop");
+            }
+         });
+    }
+   
 });

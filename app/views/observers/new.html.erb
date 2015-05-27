@@ -1,22 +1,28 @@
  <!-- container section start -->
   <section id="container" class="">
       <!--header start-->
-      
       <header class="header dark-bg">
             <div class="toggle-nav">
                 <div class="icon-reorder tooltips" data-original-title="Toggle Navigation" data-placement="bottom"></div>
             </div>
 
-            <!--logo start-->
             <a href="index.html" class="logo">GEOTAGME</a>
-            <!--logo end-->
+            <div class="nav search-row" id="top_menu">
+                
+                <ul class="nav top-menu">                    
+                    <li>
+                        <form class="navbar-form">
+                            <h3 class="nav pull-left" style="margin-top:0;"><i class="fa fa-file-text"></i> Observers</h3>
+                        </form>
+                    </li>                    
+                </ul>
+            </div>
 
            
             <div class="top-nav notification-row">                
                 <!-- notificatoin dropdown start-->
                 <ul class="nav pull-right top-menu">
                     
-                    <!-- user login dropdown start-->
                     <li class="dropdown">
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                             <span class="profile-ava">
@@ -33,16 +39,12 @@
                         </a>
                         <ul class="dropdown-menu extended logout">
                             <div class="log-arrow-up"></div>
-                            
                             <li>
                                 <a href="<%= logout_path %>"><i class="icon_key_alt"></i> Log Out</a>
                             </li>
-                            
                         </ul>
                     </li>
-                    <!-- user login dropdown end -->
                 </ul>
-                <!-- notificatoin dropdown end-->
             </div>
       </header>      
       <!--header end-->
@@ -69,8 +71,6 @@
                           <li><a class="" href="/observers/index">List</a></li>
                       </ul>
                   </li>       
-                  
-                  
               </ul>
               <!-- sidebar menu end-->
           </div>
@@ -80,45 +80,34 @@
       <!--main content start-->
       <section id="main-content">
         <section class="wrapper">
-            
-            <div class="row">
-                <div class="col-lg-12">
-                    <h3 class="page-header"><i class="fa fa-file-text"></i> Observers</h3>
-                </div>
-            </div>
-              
+         
             <div class="row"><!-- page start-->
 		            <div class="col-lg-6 col-md-12">
 					
 					         <section class="panel">
-                          <header class="panel-heading">New observer</header>
-                          <div class="panel-body">
+                        <header class="panel-heading">New observer</header>
+                        <div class="panel-body">
 
-                            <%= render "form" %>
+                             <%= render "form" %>
 
-                          <div class="form">
-                    </section>
+                        <div class="form">
+                   </section>
 
 				        </div>
 
     				    <div class="col-lg-6 col-md-12">
-
-
-                  <!-- sin contenido de momento -->
-    
+                <!-- sin contenido de momento -->
                 </div>
-
-			      </div><!-- page end--> 
-
-          </section>
+            </div><!-- page end--> 
+        </section>
       </section><!--main content end-->
 
 
   </section><!-- container section end -->
   
-<!-- javascripts -->
+  <!-- javascripts -->
 
-<!-- nice_theme -->
+  <!-- nice_theme -->
   <script src="/assets/nice_admin/js/jquery.js"></script>
   <script src="/assets/nice_admin/js/bootstrap.min.js"></script>
   <!-- nice scroll -->

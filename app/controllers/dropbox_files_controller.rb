@@ -18,7 +18,11 @@ class DropboxFilesController < ApplicationController
     photos_in_db = DropboxFile.where(user_id: get_photo_owner.id)
     previous_photos = photos_in_db.length
 
-    sync_photos_with_dropbox()
+    # sync_photos = sync_photos_with_dropbox()
+
+    # sync_photos.each do |photo|
+    #   download_photo(photo)
+    # end  
 
     photos_in_db_after_sync = DropboxFile.where(user_id: get_photo_owner.id).order(created_at: :asc)
     return photos_in_db_after_sync.offset(previous_photos)
@@ -31,15 +35,18 @@ class DropboxFilesController < ApplicationController
 
     client = Dropbox::API::Client.new(:token => get_photo_owner.token, :secret => get_photo_owner.secret)
     dropbox_folder = "/photos"
+
+    dropbox_elements = []
     
     if client.ls(dropbox_folder).any?
 
       client.ls(dropbox_folder).each do |dropbox_element|
         unless dropbox_element.is_dir?
-           download_photo(dropbox_element)
+           dropbox_elements << dropbox_element
         end
       end
     end
+    dropbox_elements
   end
 
   def download_photo(photo)
