@@ -10,10 +10,10 @@ class DropboxFilesController < ApplicationController
   end
 
   def render_new_photos
-    render :json => { newPhotos: new_photos_to_render }
+    render :json => { newPhotos: get_new_photos_to_render }
   end
 
-  def new_photos_to_render
+  def get_new_photos_to_render
 
     photos_in_db = DropboxFile.where(user_id: get_photo_owner.id)
     previous_photos = photos_in_db.length
@@ -50,32 +50,35 @@ class DropboxFilesController < ApplicationController
   end
 
   def download_photo(photo)
-    app_folder = "/app/assets/images/user_photos/"
+    
     @photo_in_db = DropboxFile.where(user_id: get_photo_owner.id).find_in_db(photo.share_url.url)
     if @photo_in_db != nil
        @photo_in_db.set_direct_url(photo) 
     else  
-      photo_name = photo.path.to_s.split("/").last
-      photo_path = Rails.root.to_s + app_folder + photo_name
-      
-      begin
-        open(photo_path, 'wb') do |file|
-           file << photo.download
+        begin
+          open(get_photo_path(photo), 'wb') do |file|
+             file << photo.download
+          end
+        rescue
+          puts "Exception occured while downloading..."
         end
-      rescue
-        puts "Exception occured while downloading..."
-      end
-      save_db_record(photo, photo_path)
+        save_db_record(photo, get_photo_path(photo))
     end
   end
 
-  def save_db_record(photo, path)
+  def get_photo_path(photo)
+    app_folder = "/app/assets/images/user_photos/"
+    photo_name = photo.path.to_s.split("/").last
+    return photo_path = Rails.root.to_s + app_folder + photo_name
+  end
 
+  def save_db_record(photo, path)
     local_file = File.open(path)
     record = DropboxFile.new(:image => local_file)
     if DropboxFile.save_photo_metadata(record, path)
        record.save_photo_parameters(get_photo_owner.id, photo)
     end
     local_file.close
+
   end
 end
