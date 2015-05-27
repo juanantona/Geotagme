@@ -18,11 +18,11 @@ class DropboxFilesController < ApplicationController
     photos_in_db = DropboxFile.where(user_id: get_photo_owner.id)
     previous_photos = photos_in_db.length
 
-    # sync_photos = sync_photos_with_dropbox()
+    sync_photos = sync_photos_with_dropbox()
 
-    # sync_photos.each do |photo|
-    #   download_photo(photo)
-    # end  
+    sync_photos.each do |photo|
+      download_photo(photo)
+    end  
 
     photos_in_db_after_sync = DropboxFile.where(user_id: get_photo_owner.id).order(created_at: :asc)
     return photos_in_db_after_sync.offset(previous_photos)
@@ -72,20 +72,10 @@ class DropboxFilesController < ApplicationController
   def save_db_record(photo, path)
 
     local_file = File.open(path)
-     
     record = DropboxFile.new(:image => local_file)
-    record.user_id = get_photo_owner.id
-    record.url = photo.direct_url.url
-    record.share_url = photo.share_url.url
-    record.path = photo.path
-    begin
-      record.geolocation = DropboxFile.metadata(path, "photo_geodata")
-      record.photo_timestamps = DropboxFile.metadata(path, "photo_timestamp")
-      record.save
-    rescue  
-      puts "Exception occured while taking photo metadata..."
+    if DropboxFile.save_photo_metadata(record, path)
+       record.save_photo_parameters(get_photo_owner.id, photo)
     end
-
     local_file.close
   end
 end

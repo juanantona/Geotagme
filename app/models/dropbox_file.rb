@@ -40,4 +40,24 @@ class DropboxFile < ActiveRecord::Base
     self.url = photo.direct_url.url
     self.save
   end
+
+  def save_photo_parameters(owner_id, photo)
+    self.user_id = owner_id
+    self.url = photo.direct_url.url
+    self.share_url = photo.share_url.url
+    self.path = photo.path
+    self.save
+  end
+
+  def self.save_photo_metadata(record, path)
+    begin
+      record.geolocation = metadata(path, "photo_geodata")
+      record.photo_timestamps = metadata(path, "photo_timestamp")
+      record.save
+      return true
+    rescue  
+      puts "Exception occured while taking photo metadata..."
+      return false
+    end
+  end
 end
