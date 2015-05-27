@@ -11,6 +11,7 @@ class SessionsController < ApplicationController
 		observer = Observer.find_by(email: params[:observer][:email])
 		if (observer && observer.authenticate(params[:observer][:password]))
 			session[:user_id] = observer.id
+			session[:role] = 'observer'
 		
  			redirect_to dashboard_path
   		else

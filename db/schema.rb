@@ -43,15 +43,6 @@ ActiveRecord::Schema.define(version: 20150527002453) do
     t.datetime "updated_at"
   end
 
-  create_table "permissions", force: true do |t|
-    t.integer  "user_id",                null: false
-    t.integer  "observer_id",            null: false
-    t.date     "init_period_permission"
-    t.date     "final_period_permision"
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
-  end
-
   create_table "users", force: true do |t|
     t.string   "name",       null: false
     t.string   "email",      null: false
