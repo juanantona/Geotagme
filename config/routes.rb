@@ -14,5 +14,6 @@ Rails.application.routes.draw do
   
   get '/observers/new' => 'observers#new', as: :observer
   post '/observers' => 'observers#create'
+  get '/observers/index' => 'observers#index'
   
 end

@@ -1,5 +1,9 @@
 class ObserversController < ApplicationController
 
+	def index
+		@observers = Observer.where(user_id: current_user.id)
+	end
+
 	def new
 		@observer = Observer.new
 		render observer_path
