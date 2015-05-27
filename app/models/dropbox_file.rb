@@ -10,10 +10,10 @@ class DropboxFile < ActiveRecord::Base
 
   def self.photo_owner(role, id)
     if role == 'photographer'
-      return User.find_by_id(id)
+      User.find_by_id(id)
     elsif role == 'observer'
       observer_host = Observer.find_by_id(id).user_id
-      return User.find_by_id(observer_host)
+      User.find_by_id(observer_host)
     end      
   end
 

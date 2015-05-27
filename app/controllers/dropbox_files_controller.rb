@@ -7,12 +7,10 @@ class DropboxFilesController < ApplicationController
   def dashboard
     @photos_in_db = DropboxFile.where(user_id: get_photo_owner.id)
     render "dashboard"
-      
   end
 
   def render_new_photos
     render :json => { newPhotos: new_photos_to_render }
-    
   end
 
   def new_photos_to_render

@@ -7,7 +7,6 @@ class ObserversController < ApplicationController
 	def new
 		@observer = Observer.new
 		render observer_path
-		
 	end
 
 	def create
@@ -19,7 +18,6 @@ class ObserversController < ApplicationController
 		else
 			redirect_to observer_path
 		end	
-		
 	end
 
 	def has_secure_password 
