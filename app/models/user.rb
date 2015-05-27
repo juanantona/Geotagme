@@ -11,23 +11,19 @@ class User < ActiveRecord::Base
 	    end
 
 	    user
-		
 	end
 
 
 	def self.create_for(name, email)
-		
 		user = self.new
 		user.name = name
 		user.email = email
 		user.save
 
 		user
-
 	end
 
 	def set_dropbox_credentials(access)
-
 		self.token = access.token
 		self.secret = access.secret
 		self.save

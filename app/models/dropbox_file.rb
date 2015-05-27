@@ -27,4 +27,17 @@ class DropboxFile < ActiveRecord::Base
        return exif_data.exif[:date_time_digitized]
     end 
   end
+
+  def self.find_in_db(share_url)
+    if exists?(:share_url => share_url)
+        photo = find_by share_url: share_url
+    end
+    photo
+
+  end
+
+  def set_direct_url(photo)
+    self.url = photo.direct_url.url
+    self.save
+  end
 end
