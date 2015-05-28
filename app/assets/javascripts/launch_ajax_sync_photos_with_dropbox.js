@@ -22,10 +22,9 @@ $(document).ready(function()
                     L.marker([lon, lat], {draggable: false}).addTo(map)
                 });
             },
-            
             error: function()
             {
-                console.log("nop");
+                console.log("error");
             }
          });
     }

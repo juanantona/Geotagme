@@ -14,22 +14,15 @@ class DropboxFilesController < ApplicationController
   end
 
   def get_new_photos_to_render
-    #new_photos_to_render = []
-
-    photos_in_db = DropboxFile.where(user_id: get_photo_owner.id)
-    previous_photos = photos_in_db.length
-
+    new_photos_to_render = []
     photos_in_dropbox = get_photos_in_dropbox()
     
     photos_in_dropbox.each do |photo|
-        if check_photo_and_dowload(photo)
-            #puts 'download successful'
-            #new_photos_to_render << DropboxFile.where(share_url: photo.share_url.url)[0]    
-        end  
+      if check_photo_and_dowload(photo)
+          new_photos_to_render << DropboxFile.where(share_url: photo.share_url.url).first   
+      end  
     end
-    #new_photos_to_render
-    photos_in_db_after_sync = DropboxFile.where(user_id: get_photo_owner.id).order(created_at: :asc)
-    return photos_in_db_after_sync.offset(previous_photos)
+    new_photos_to_render
   end
 
   private
@@ -39,7 +32,6 @@ class DropboxFilesController < ApplicationController
   end
 
   def get_photos_in_dropbox()
-
     client = Dropbox::API::Client.new(:token => get_photo_owner.token, :secret => get_photo_owner.secret)
     photos_in_dropbox = []
     
@@ -59,19 +51,21 @@ class DropboxFilesController < ApplicationController
     if @photo_in_db != nil
        @photo_in_db.set_direct_url(photo) 
     else  
-       download_photo(photo)
+       return download_photo(photo)
     end
+    return false
   end
 
   def download_photo(photo)
     begin
       open(get_photo_path(photo), 'wb') do |file|
-           file << photo.download
+        file << photo.download
       end
     rescue
-      puts "Exception occured while downloading..."
+        puts "Exception occured while downloading..."
+        return false
     end
-    save_db_record(photo, get_photo_path(photo))
+    return save_db_record(photo, get_photo_path(photo))
   end
   
   def get_photo_path(photo)
@@ -84,7 +78,9 @@ class DropboxFilesController < ApplicationController
     local_file = File.open(path)
     record = DropboxFile.new(:image => local_file)
     if DropboxFile.save_photo_metadata(record, path)
-       record.save_photo_parameters(get_photo_owner.id, photo)
+      return record.save_photo_parameters(get_photo_owner.id, photo)
+    else
+      return false
     end
     local_file.close
   end
