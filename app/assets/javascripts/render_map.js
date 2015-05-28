@@ -21,15 +21,6 @@ map.fitBounds(bounds);
 
 var popup = L.popup();
 
-function onMapClick(e) 
-{
-  popup
-  .setLatLng(e.latlng)
-  .setContent("You clicked the map at " + e.latlng.toString())
-  .openOn(map);
-}
-map.on('click', onMapClick);
-
 function showPopup(coord){
   var lat =  Number(coord.split(',')[0]);
   var lon =  Number(coord.split(',')[1]);
