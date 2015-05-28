@@ -27,22 +27,22 @@ class DropboxFilesController < ApplicationController
 
   private
 
-  def get_dropbox_folder
-    return dropbox_folder = "/photos"
-  end
-
   def get_photos_in_dropbox()
     client = Dropbox::API::Client.new(:token => get_photo_owner.token, :secret => get_photo_owner.secret)
     photos_in_dropbox = []
     
     if client.ls(get_dropbox_folder).any?
-      client.ls(get_dropbox_folder).each do |dropbox_element|
+      client.ls(get_dropbox_folder).each do |dropbox_element| 
         unless dropbox_element.is_dir?
            photos_in_dropbox << dropbox_element
         end
       end
     end
     photos_in_dropbox
+  end
+
+  def get_dropbox_folder
+    return dropbox_folder = "/photos"
   end
 
   def check_photo_and_dowload(photo)
