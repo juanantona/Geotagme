@@ -17,7 +17,7 @@ $(document).ready(function()
                     var coord = [];
                         coord.push(lon);
                         coord.push(lat); 
-                    var img = '<img src=' + photo.url + ' id=' + coord + ' class="thumbnail" onclick="showPopup(id)">';
+                    var img = '<img src=' + photo.url + ' id=' + coord + ' class="thumbnail" onclick="showPopup(id)"/>';
                     $("#photo-carrusel").append(img);
                     L.marker([lon, lat], {draggable: false}).addTo(map)
                 });
