@@ -1,12 +1,12 @@
 class DropboxFilesController < ApplicationController
-   
-  def get_photo_owner
-    photo_owner = DropboxFile.photo_owner(session[:role], session[:user_id])
-  end
-
+  
   def dashboard
     @photos_in_db = DropboxFile.where(user_id: get_photo_owner.id)
     render "dashboard"
+  end
+
+  def get_photo_owner
+    photo_owner = DropboxFile.photo_owner(session[:role], session[:user_id])
   end
 
   def render_new_photos
@@ -14,43 +14,29 @@ class DropboxFilesController < ApplicationController
   end
 
   def get_new_photos_to_render
+    #new_photos_to_render = []
 
     photos_in_db = DropboxFile.where(user_id: get_photo_owner.id)
     previous_photos = photos_in_db.length
 
     photos_in_dropbox = get_photos_in_dropbox()
-
+    
     photos_in_dropbox.each do |photo|
-      check_photo_and_dowload(photo)
-    end  
-
+        if check_photo_and_dowload(photo)
+            #puts 'download successful'
+            #new_photos_to_render << DropboxFile.where(share_url: photo.share_url.url)[0]    
+        end  
+    end
+    #new_photos_to_render
     photos_in_db_after_sync = DropboxFile.where(user_id: get_photo_owner.id).order(created_at: :asc)
     return photos_in_db_after_sync.offset(previous_photos)
-      
-  end
-
-  def check_photo_and_dowload(photo)
-    @photo_in_db = DropboxFile.where(user_id: get_photo_owner.id).find_in_db(photo.share_url.url)
-    if @photo_in_db != nil
-       @photo_in_db.set_direct_url(photo) 
-    else  
-        download_photo(photo)
-    end
-  
-  end
-
-  def download_photo(photo)
-      begin
-        open(get_photo_path(photo), 'wb') do |file|
-             file << photo.download
-        end
-      rescue
-        puts "Exception occured while downloading..."
-      end
-      save_db_record(photo, get_photo_path(photo))
   end
 
   private
+
+  def get_dropbox_folder
+    return dropbox_folder = "/photos"
+  end
 
   def get_photos_in_dropbox()
 
@@ -67,12 +53,27 @@ class DropboxFilesController < ApplicationController
     photos_in_dropbox
   end
 
-  def get_dropbox_folder
-    return dropbox_folder = "/photos"
+  def check_photo_and_dowload(photo)
+    @photos_owner = DropboxFile.where(user_id: get_photo_owner.id)
+    @photo_in_db = @photos_owner.find_in_db(photo.share_url.url)
+    if @photo_in_db != nil
+       @photo_in_db.set_direct_url(photo) 
+    else  
+       download_photo(photo)
+    end
   end
 
- 
-
+  def download_photo(photo)
+    begin
+      open(get_photo_path(photo), 'wb') do |file|
+           file << photo.download
+      end
+    rescue
+      puts "Exception occured while downloading..."
+    end
+    save_db_record(photo, get_photo_path(photo))
+  end
+  
   def get_photo_path(photo)
     app_folder = "/app/assets/images/user_photos/"
     photo_name = photo.path.to_s.split("/").last
@@ -86,6 +87,5 @@ class DropboxFilesController < ApplicationController
        record.save_photo_parameters(get_photo_owner.id, photo)
     end
     local_file.close
-
   end
 end

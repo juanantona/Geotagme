@@ -131,6 +131,9 @@
                           <ul id="photo-carrusel">
 
                                     <% @photos_in_db.each do |photo| %>
+                                    
+
+
                                        <li style="color:white;"><%= photo.photo_timestamps %></li>
                                        <img src=<%= photo.url %> class="thumbnail" />
                                     <% end %>       

@@ -28,8 +28,19 @@ function onMapClick(e)
   .setContent("You clicked the map at " + e.latlng.toString())
   .openOn(map);
 }
-
 map.on('click', onMapClick);
+
+function showPopup(coord){
+  var lat =  Number(coord.split(',')[0]);
+  var lon =  Number(coord.split(',')[1]);
+  var latlon = new L.LatLng(lat, lon);
+  popup
+  .setLatLng(latlon)
+  .setContent("This photo was taken here")
+  .openOn(map);
+};
+
+
 
 
 
