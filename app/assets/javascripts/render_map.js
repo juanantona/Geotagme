@@ -38,6 +38,7 @@ function showPopup(coord){
   .setLatLng(latlon)
   .setContent("This photo was taken here")
   .openOn(map);
+  map.setView(latlon)
 };
 
 
