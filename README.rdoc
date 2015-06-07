@@ -1,28 +1,5 @@
-== README
+== GEOTAGME
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+*Geotagme* is a web application for sharing geolocated photos.
 
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+You`ll can give permission to others so they will can access photos you upload from your mobile phone to your Dropbox account and they will can see where and when they were taken on a world map.
