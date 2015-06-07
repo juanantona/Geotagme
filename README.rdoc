@@ -2,4 +2,4 @@
 
 *Geotagme* is a web application for sharing geolocated photos.
 
-You`ll can give permission to others so they will can access photos you upload from your mobile phone to your Dropbox account and they will can see where and when they were taken on a world map.
+You can give permission to others so they can access photos you upload from your mobile phone to your Dropbox account and they will can see where and when they were taken on a world map.
