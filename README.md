@@ -6,5 +6,5 @@ You can give permission to others so they can access photos you upload from your
 
 ![](https://dl.dropbox.com/s/pvzon6nshhua43o/geotagme_landing.png?dl=0)
 
-![](https://dl.dropbox.com/s/10mn8ouh8oqcspb/geotagme_dashboard.png?dl=0)
+![](https://www.dropbox.com/s/qnbo4u6ngg4ukbn/geotagme_dashboardo.png?dl=0)
 
